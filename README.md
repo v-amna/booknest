@@ -23,3 +23,9 @@ Newsletter subscription, promotional banners, and special offers. Book reviews a
 
 ### profiles
 User profiles and authentication. Personal information, Delivery address, order history, and account settings.
+## Wireframe
+![Homepage_and_BookCataloge_page](wireframe/home_and_book_page.png)
+![cart_page](wireframe/checkout.png)
+![checkout_page](wireframe/checkout.png)
+![review_page](wireframe/review.png)
+![payment_page](wireframe/payment_success_and_fail_page.png)
