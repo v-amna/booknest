@@ -14,13 +14,19 @@
     {% for book in books %}
     <div class="col-md-4">
         <div class="card">
+            {% if book.cover_image %}
+                        <img src="{{ book.cover_image.url }}"
+                         class="card-img-top book-card-image"
+                         alt="{{ book.title }}">
+            {% endif %}
+
             <div class="card-body">
                 <h5>{{ book.title }}</h5>
 
                     <p>{{ book.author }}</p>
 
                     <p>€{{ book.price }}</p>
-
+                    
                 <a href="{% url 'book_detail' book.id %}" class="btn btn-primary">
                     View Details
                 </a>

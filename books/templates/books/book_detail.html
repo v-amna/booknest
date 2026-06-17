@@ -5,7 +5,11 @@
 {% block content %}
 
 <div class="container">
-
+    {% if book.cover_image %}
+    <img src="{{ book.cover_image.url }}"
+         class="img-fluid mb-3 book-detail-image"
+         alt="{{ book.title }}">
+    {% endif %}
     <h1>{{ book.title }}</h1>
 
     <p><strong>Author:</strong> {{ book.author }}</p>

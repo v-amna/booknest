@@ -1,0 +1,8 @@
+.book-card-image {
+    height: 300px;
+    object-fit: cover;
+}
+
+.book-detail-image {
+    max-height: 500px;
+}
