@@ -1,8 +1,46 @@
+/* Search Form */
+.search-form {
+    margin-bottom: 2rem;
+}
+
+/* Book Grid */
+.book-grid {
+    row-gap: 1.5rem;
+}
+
+/* Book Cards */
+.book-card {
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease;
+}
+
+.book-card:hover {
+    transform: translateY(-5px);
+}
+
 .book-card-image {
     height: 300px;
     object-fit: cover;
 }
 
+.card-body {
+    padding: 1.25rem;
+}
+
+/* Buttons */
+.btn-primary {
+    border: none;
+}
+
+.btn-secondary {
+    margin-left: 5px;
+}
+
+/* Book Detail Page */
 .book-detail-image {
     max-height: 500px;
+    border-radius: 12px;
 }
