@@ -3,9 +3,85 @@
 {% block extra_title %}Home{% endblock %}
 
 {% block content %}
-<div class="text-center">
-    <h1>Welcome to BookNest</h1>
-    <p>Discover your next great read.</p>
-    <a href="#" class="btn btn-primary">Browse Books</a>
-</div>
+
+<!-- Hero Section -->
+<section class="hero-banner text-center">
+
+    <div class="hero-content">
+
+        <h1>Discover Your Next Great Read</h1>
+
+        <p class="lead">
+            Explore thousands of books across every genre.
+        </p>
+
+        <a href="{% url 'books' %}"
+           class="btn btn-primary btn-lg">
+            Browse Books
+        </a>
+
+    </div>
+
+</section>
+
+<!-- Categories -->
+<section class="categories-section">
+
+    <h2 class="text-center mb-4">
+        Browse Categories
+    </h2>
+
+    <div class="category-list">
+
+        <span class="category-badge">Fiction</span>
+        <span class="category-badge">Business</span>
+        <span class="category-badge">Technology</span>
+        <span class="category-badge">Romance</span>
+        <span class="category-badge">Self-Help</span>
+        <span class="category-badge">Biography</span>
+
+    </div>
+
+</section>
+
+<!-- Featured Books -->
+<section class="featured-books">
+
+    <h2 class="text-center mb-4">
+        Featured Books
+    </h2>
+
+    <div class="row">
+
+        <div class="col-md-4 mb-4">
+            <div class="card book-card">
+                <div class="card-body text-center">
+                    <h5>Featured Book</h5>
+                    <p>Coming Soon</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card book-card">
+                <div class="card-body text-center">
+                    <h5>Featured Book</h5>
+                    <p>Coming Soon</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card book-card">
+                <div class="card-body text-center">
+                    <h5>Featured Book</h5>
+                    <p>Coming Soon</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
 {% endblock %}

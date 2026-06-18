@@ -1,4 +1,10 @@
+
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
 /* Search Form */
+
 .search-form {
     margin-bottom: 2rem;
 }
@@ -43,4 +49,78 @@
 .book-detail-image {
     max-height: 500px;
     border-radius: 12px;
+}
+/* Hero Section */
+
+.hero-banner {
+    background-image: linear-gradient(
+        rgba(0,0,0,0.65),
+        rgba(0,0,0,0.65)
+    ),
+    url('/static/images/hero-books.jpg');
+
+    background-size: cover;
+    background-position: center;
+
+    height: 450px;
+
+    border-radius: 12px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+    color: white;
+
+    margin-bottom: 3rem;
+}
+.hero-content .btn {
+    padding: 12px 30px;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+.hero-content h1 {
+    font-size: 3rem;
+    font-weight: 700;
+}
+
+.hero-content p {
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Categories */
+
+.categories-section {
+    margin-bottom: 3rem;
+}
+
+.category-list {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.category-badge {
+    background: #0d6efd;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+.category-badge:hover {
+    transform: translateY(-3px);
+}
+
+/* Featured Books */
+
+.featured-books {
+    margin-bottom: 3rem;
+}
+footer {
+    padding: 1rem 0;
 }
