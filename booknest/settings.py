@@ -44,6 +44,8 @@ INSTALLED_APPS = [
 
     "home",
     "books",
+    "profiles",
+    
 ]
 
 MIDDLEWARE = [
