@@ -148,3 +148,4 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 # Allauth settings
 ACCOUNT_EMAIL_VERIFICATION = "none"
 ACCOUNT_EMAIL_REQUIRED = False
+LOGIN_REDIRECT_URL = '/profile/'
