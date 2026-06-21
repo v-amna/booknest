@@ -1,32 +1,49 @@
 {% extends "base.html" %}
 
-{% block extra_title %}
-Profile
-{% endblock %}
+{% block extra_title %}My Profile{% endblock %}
 
 {% block content %}
 
-<div class="container">
+<div class="container py-5">
 
-    <h1 class="mb-4">
-        My Profile
-    </h1>
+    <div class="row justify-content-center">
 
-    <form method="POST">
+        <div class="col-lg-8">
 
-        {% csrf_token %}
+            <div class="card shadow-sm">
 
-        {{ form.as_p }}
+                <div class="card-header">
+                    <h2 class="mb-0">My Profile</h2>
+                </div>
 
-        <button
-            type="submit"
-            class="btn btn-primary">
+                <div class="card-body">
 
-            Save Profile
+                    <p class="text-muted">
+                        Manage your delivery information.
+                    </p>
 
-        </button>
+                    <form method="POST">
+                        {% csrf_token %}
 
-    </form>
+                        {{ form.as_p }}
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary">
+
+                            Save Profile
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
 
 </div>
 

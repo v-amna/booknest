@@ -124,3 +124,44 @@
 footer {
     padding: 1rem 0;
 }
+
+/* Profile Page */
+
+.card {
+    border: none;
+    border-radius: 12px;
+}
+
+.card-header {
+    background-color: #0d6efd;
+    color: white;
+    padding: 1rem 1.5rem;
+}
+
+.card-body {
+    padding: 2rem;
+}
+
+form p {
+    margin-bottom: 1rem;
+}
+
+form label {
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+    display: block;
+}
+
+form input,
+form select,
+form textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.btn-primary {
+    padding: 10px 24px;
+    border-radius: 8px;
+}
