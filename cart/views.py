@@ -1,5 +1,57 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render , get_object_or_404
+from django.contrib import messages
+
+from books.models import Book
 
 # Create your views here.
 def view_cart(request):
-    return render(request, 'cart/cart.html')
+
+    cart = request.session.get('cart', {})
+
+    cart_items = []
+    total = 0
+
+    for item_id, quantity in cart.items():
+
+        book = get_object_or_404(Book, pk=item_id)
+
+        subtotal = book.price * quantity
+        total += subtotal
+
+        cart_items.append({
+            'book': book,
+            'quantity': quantity,
+            'subtotal': subtotal,
+        })
+
+    context = {
+        'cart_items': cart_items,
+        'total': total,
+    }
+
+    return render(
+        request,
+        'cart/cart.html',
+        context
+    )
+def add_to_cart(request, item_id):
+
+    book = get_object_or_404(Book, pk=item_id)
+
+    cart = request.session.get('cart', {})
+
+    item_id = str(item_id)
+
+    if item_id in cart:
+        cart[item_id] += 1
+    else:
+        cart[item_id] = 1
+
+    request.session['cart'] = cart
+
+    messages.success(
+        request,
+        f'{book.title} added to your cart.'
+    )
+
+    return redirect('view_cart')

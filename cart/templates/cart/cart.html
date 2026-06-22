@@ -1,8 +1,43 @@
-{% extends "base.html" %}
+<div class="container">
 
-{% block extra_title %}Shopping Cart{% endblock %}
+    <h1 class="mb-4">Shopping Cart</h1>
 
-{% block content %}
-<h1>Shopping Cart</h1>
-<p>Your cart is currently empty.</p>
-{% endblock %}
+    {% if cart_items %}
+
+        {% for item in cart_items %}
+
+            <div class="card mb-3">
+
+                <div class="card-body">
+
+                    <h5>{{ item.book.title }}</h5>
+
+                    <p>Author: {{ item.book.author }}</p>
+
+                    <p>Quantity: {{ item.quantity }}</p>
+
+                    <p>Price: €{{ item.book.price }}</p>
+
+                    <p>
+                        <strong>
+                            Subtotal: €{{ item.subtotal }}
+                        </strong>
+                    </p>
+
+                </div>
+
+            </div>
+
+        {% endfor %}
+
+        <h3>
+            Total: €{{ total }}
+        </h3>
+
+    {% else %}
+
+        <p>Your cart is currently empty.</p>
+
+    {% endif %}
+
+</div>
