@@ -55,3 +55,20 @@ def add_to_cart(request, item_id):
     )
 
     return redirect('view_cart')
+def update_cart(request, item_id):
+
+    quantity = int(request.POST.get('quantity'))
+
+    cart = request.session.get('cart', {})
+
+    if quantity > 0:
+        cart[str(item_id)] = quantity
+
+    request.session['cart'] = cart
+
+    messages.success(
+        request,
+        'Cart updated successfully.'
+    )
+
+    return redirect('view_cart')
