@@ -27,6 +27,7 @@ urlpatterns = [
     path("books/", include("books.urls")),
     path('profile/',include('profiles.urls')),
     path('cart/', include('cart.urls')),
+    path('checkout/',include('checkout.urls')),
 ]
 
 if settings.DEBUG:
