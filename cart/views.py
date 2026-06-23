@@ -72,3 +72,21 @@ def update_cart(request, item_id):
     )
 
     return redirect('view_cart')
+
+def remove_from_cart(request, item_id):
+
+    cart = request.session.get('cart', {})
+
+    item_id = str(item_id)
+
+    if item_id in cart:
+        del cart[item_id]
+
+    request.session['cart'] = cart
+
+    messages.success(
+        request,
+        'Item removed from cart.'
+    )
+
+    return redirect('view_cart')
