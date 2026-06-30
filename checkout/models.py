@@ -108,7 +108,7 @@ class OrderLineItem(models.Model):
         self.order.update_total()
 
     
-        self.save()
+        #self.save()
 
     def __str__(self):
         return (

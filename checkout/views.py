@@ -28,6 +28,7 @@ def checkout(request):
                     book=book,
                     quantity=quantity
                 )
+            request.session['cart'] = {}
 
             messages.success(
                 request,
