@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from profiles.models import UserProfile
 from books.models import Book
+from django.db.models import Sum
 
 # Create your models here.
 
@@ -59,6 +60,16 @@ class Order(models.Model):
         decimal_places=2,
         default=0
     )
+    def update_total(self):
+
+        self.order_total = (
+        self.lineitems.aggregate(
+            Sum('lineitem_total')
+        )['lineitem_total__sum']
+        or 0
+    )
+
+        self.save()
 
     def __str__(self):
         return f"Order {self.id}"
@@ -94,9 +105,15 @@ class OrderLineItem(models.Model):
         )
 
         super().save(*args, **kwargs)
+        self.order.update_total()
+
+    
+        self.save()
 
     def __str__(self):
         return (
             f"{self.book.title} "
             f"on Order {self.order.id}"
         )
+    
+    
