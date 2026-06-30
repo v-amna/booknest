@@ -37,8 +37,9 @@ def profile(request):
         )
 
     context = {
-        'form': form,
-    }
+    'form': form,
+    'orders': profile.order_set.all(),
+}
 
     return render(
         request,
