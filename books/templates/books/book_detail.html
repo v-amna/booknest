@@ -34,6 +34,24 @@
     <a href="{% url 'books' %}" class="btn btn-secondary">
         Back to Books
     </a>
+    {% if request.user.is_superuser %}
+
+<hr>
+
+<a href="{% url 'edit_book' book.id %}"
+   class="btn btn-warning">
+
+    Edit
+
+</a>
+<a href="{% url 'delete_book' book.id %}"
+   class="btn btn-danger">
+
+    Delete
+
+</a>
+
+{% endif %}
 
 </div>
 

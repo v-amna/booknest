@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block extra_title %}
+Edit Book
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <h1 class="mb-4">
+
+        Edit Book
+
+    </h1>
+
+    <form method="POST"
+          enctype="multipart/form-data">
+
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button
+            class="btn btn-warning"
+            type="submit">
+
+            Save Changes
+
+        </button>
+
+        <a href="{% url 'book_detail' book.id %}"
+           class="btn btn-secondary">
+
+            Cancel
+
+        </a>
+
+    </form>
+
+</div>
+
+{% endblock %}

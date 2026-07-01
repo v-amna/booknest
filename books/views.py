@@ -1,4 +1,8 @@
-from django.shortcuts import get_object_or_404, render
+
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from .forms import BookForm
+from django.shortcuts import get_object_or_404, render, redirect
 from django.db.models import Q
 from books.models import Book,Category
 
@@ -25,3 +29,130 @@ def book_list(request):
 def book_detail(request, book_id):
     book = get_object_or_404(Book, pk=book_id)
     return render(request, 'books/book_detail.html', {'book': book})
+
+
+@login_required
+def add_book(request):
+
+    if not request.user.is_superuser:
+
+        messages.error(
+            request,
+            "Sorry, only store administrators can do that."
+        )
+
+        return redirect("books")
+
+    if request.method == "POST":
+
+        form = BookForm(
+            request.POST,
+            request.FILES
+        )
+
+        if form.is_valid():
+
+            form.save()
+
+            messages.success(
+                request,
+                "Book added successfully."
+            )
+
+            return redirect("books")
+
+    else:
+
+        form = BookForm()
+
+    context = {
+        "form": form,
+    }
+
+    return render(
+        request,
+        "books/add_book.html",
+        context
+    )
+
+@login_required
+def edit_book(request, book_id):
+
+    if not request.user.is_superuser:
+
+        messages.error(
+            request,
+            "Sorry, only store administrators can do that."
+        )
+
+        return redirect("books")
+
+    book = get_object_or_404(
+        Book,
+        pk=book_id
+    )
+
+    if request.method == "POST":
+
+        form = BookForm(
+            request.POST,
+            request.FILES,
+            instance=book
+        )
+
+        if form.is_valid():
+
+            form.save()
+
+            messages.success(
+                request,
+                "Book updated successfully."
+            )
+
+            return redirect(
+                "book_detail",
+                book.id
+            )
+
+    else:
+
+        form = BookForm(
+            instance=book
+        )
+
+    context = {
+        "form": form,
+        "book": book,
+    }
+
+    return render(
+        request,
+        "books/edit_book.html",
+        context
+    )
+
+@login_required
+def delete_book(request, book_id):
+
+    if not request.user.is_superuser:
+
+        messages.error(
+            request,
+            "Sorry, only store administrators can do that."
+        )
+
+        return redirect("books")
+
+    book = get_object_or_404(
+        Book,
+        pk=book_id
+    )
+
+    book.delete()
+
+    messages.success(
+        request,
+        "Book deleted successfully."
+    )
+
+    return redirect("books")
