@@ -165,3 +165,41 @@ form textarea {
     padding: 10px 24px;
     border-radius: 8px;
 }
+/* Widget Styles */
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-file input[type="file"] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.custom-file-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.img-preview {
+    max-width: 250px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    padding: 5px;
+    margin-top: 10px;
+}
+.custom-file-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.img-thumbnail {
+    border-radius: 8px;
+}

@@ -35,3 +35,19 @@
 </div>
 
 {% endblock %}
+{% block postloadjs %}
+{{ block.super }}
+
+<script>
+
+    $('#new-image').change(function() {
+
+        var file = $('#new-image')[0].files[0];
+
+        $('.custom-file-label').text(file.name);
+
+    });
+
+</script>
+
+{% endblock %}

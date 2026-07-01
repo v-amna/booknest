@@ -1,0 +1,39 @@
+{% if widget.is_initial %}
+
+<p class="mb-2"><strong>Current Image:</strong></p>
+
+<img
+    src="{{ widget.value.url }}"
+    alt="Current Image"
+    class="img-thumbnail mb-3"
+    style="max-width: 200px;">
+
+{% if not widget.required %}
+
+<div class="form-check mb-3">
+
+    <input
+        class="form-check-input"
+        type="checkbox"
+        name="{{ widget.checkbox_name }}"
+        id="{{ widget.checkbox_id }}">
+
+    <label
+        class="form-check-label"
+        for="{{ widget.checkbox_id }}">
+
+        Remove image
+
+    </label>
+
+</div>
+
+{% endif %}
+
+{% endif %}
+
+<input
+    type="{{ widget.type }}"
+    name="{{ widget.name }}"
+    class="form-control"
+    {% include "django/forms/widgets/attrs.html" %}>

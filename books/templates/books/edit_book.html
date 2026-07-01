@@ -8,11 +8,21 @@ Edit Book
 
 <div class="container">
 
-    <h1 class="mb-4">
+    <h1 class="mb-4">Edit Book</h1>
+    {% if book.cover_image %}
 
-        Edit Book
+<div class="mb-3">
 
-    </h1>
+    <p><strong>Current Cover</strong></p>
+
+    <img
+        src="{{ book.cover_image.url }}"
+        alt="{{ book.title }}"
+        class="img-preview">
+
+</div>
+
+{% endif %}
 
     <form method="POST"
           enctype="multipart/form-data">
