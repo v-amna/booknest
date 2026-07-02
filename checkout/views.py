@@ -11,6 +11,23 @@ from .models import Order, OrderLineItem
 def checkout(request):
 
     cart=request.session.get('cart', {})
+    cart_items = []
+    total = 0
+
+    for item_id, quantity in cart.items():
+        book = get_object_or_404(Book, pk=item_id)
+
+        subtotal = book.price * quantity
+        total += subtotal
+
+        cart_items.append({
+            'book': book,
+            'quantity': quantity,
+            'subtotal': subtotal,
+        })
+
+    delivery = 0
+    grand_total = total + delivery
     if request.method == "POST":
 
         form = OrderForm(request.POST)
@@ -59,6 +76,12 @@ def checkout(request):
 
     context = {
         "form": form,
+        "stripe_public_key": "pk_test_51TeumHIkXOU5Pgli1nTQaUkh3NyaCDEGcfCuc6MbEotjg0uH5VDdxsq9Ur28rQo5lfMBYruOaiUqeUz5rkQlKKHn00BDOlTyAn",
+        "client_secret": "sk_test_your_secret_key",
+        "cart_items": cart_items,
+        "total": total,
+        "delivery": delivery,
+        "grand_total": grand_total
     }
 
     return render(
