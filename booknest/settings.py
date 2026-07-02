@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # Allauth
     'allauth',
     'allauth.account',
+    'django_countries',
 
     "home",
     "books",

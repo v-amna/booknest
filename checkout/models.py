@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from profiles.models import UserProfile
 from books.models import Book
 from django.db.models import Sum
+from django_countries.fields import CountryField
 
 # Create your models here.
 
@@ -47,8 +48,8 @@ class Order(models.Model):
         blank=True
     )
 
-    country = models.CharField(
-        max_length=40
+    country = CountryField(
+         blank_label="Select Country"
     )
 
     date = models.DateTimeField(
