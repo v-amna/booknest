@@ -204,3 +204,61 @@ def add_review(request, book_id):
         "books/add_review.html",
         context
     )
+
+@login_required
+def edit_review(request, review_id):
+
+    review = get_object_or_404(
+        Review,
+        pk=review_id
+    )
+
+    if review.user != request.user:
+
+        messages.error(
+            request,
+            "You can only edit your own reviews."
+        )
+
+        return redirect(
+            "book_detail",
+            book_id=review.book.id
+        )
+
+    if request.method == "POST":
+
+        form = ReviewForm(
+            request.POST,
+            instance=review
+        )
+
+        if form.is_valid():
+
+            form.save()
+
+            messages.success(
+                request,
+                "Review updated successfully."
+            )
+
+            return redirect(
+                "book_detail",
+                book_id=review.book.id
+            )
+
+    else:
+
+        form = ReviewForm(
+            instance=review
+        )
+
+    context = {
+        "form": form,
+        "book": review.book,
+    }
+
+    return render(
+        request,
+        "books/edit_review.html",
+        context
+    )

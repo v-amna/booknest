@@ -95,6 +95,18 @@
 
                 </p>
 
+                {% if request.user == review.user %}
+
+    <a
+        href="{% url 'edit_review' review.id %}"
+        class="btn btn-sm btn-warning">
+
+        Edit
+
+    </a>
+
+{% endif %}
+
             </div>
 
         </div>

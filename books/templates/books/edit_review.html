@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block extra_title %}
+Edit Review
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <h2>Edit Review</h2>
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button
+            class="btn btn-warning"
+            type="submit">
+
+            Save Changes
+
+        </button>
+
+        <a
+            href="{% url 'book_detail' book.id %}"
+            class="btn btn-secondary">
+
+            Cancel
+
+        </a>
+
+    </form>
+
+</div>
+
+{% endblock %}
