@@ -14,7 +14,7 @@
 
     <h1>Checkout</h1>
 
-    <form method="POST">
+    <form method="POST" id="payment-form">
 
         {% csrf_token %}
 
@@ -29,7 +29,7 @@
             <div id="card-errors" role="alert"></div>
         </fieldset>
 
-        <button
+        <button id="submit-button"
             type="submit"
             class="btn btn-success">
 

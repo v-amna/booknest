@@ -3,12 +3,18 @@ from django.shortcuts import render, redirect,get_object_or_404
 from .models import Order
 from django.contrib import messages
 from books.models import Book
+from django.conf import settings
+import stripe
 from .forms import OrderForm
 from .models import Order, OrderLineItem
 
 
 
+
 def checkout(request):
+
+    stripe_public_key = settings.STRIPE_PUBLIC_KEY
+    stripe_secret_key = settings.STRIPE_SECRET_KEY
 
     cart=request.session.get('cart', {})
     cart_items = []
@@ -28,6 +34,15 @@ def checkout(request):
 
     delivery = 0
     grand_total = total + delivery
+    # Create Stripe PaymentIntent
+    stripe_total = round(grand_total * 100)
+    stripe.api_key = stripe_secret_key
+
+    intent = stripe.PaymentIntent.create(
+        amount=stripe_total,
+        currency=settings.STRIPE_CURRENCY,
+    )
+
     if request.method == "POST":
 
         form = OrderForm(request.POST)
@@ -73,11 +88,16 @@ def checkout(request):
     else:
 
         form = OrderForm()
+    if not stripe_public_key:
+        messages.warning(
+            request,
+            'Stripe public key is missing. Please set it in your environment variables.'
+        )
 
     context = {
         "form": form,
-        "stripe_public_key": "pk_test_51TeumHIkXOU5Pgli1nTQaUkh3NyaCDEGcfCuc6MbEotjg0uH5VDdxsq9Ur28rQo5lfMBYruOaiUqeUz5rkQlKKHn00BDOlTyAn",
-        "client_secret": "sk_test_your_secret_key",
+        "stripe_public_key": stripe_public_key,
+        "client_secret": intent.client_secret,
         "cart_items": cart_items,
         "total": total,
         "delivery": delivery,

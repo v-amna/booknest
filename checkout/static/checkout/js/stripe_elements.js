@@ -50,8 +50,9 @@ card.addEventListener('change', function(event) {
    Handle form submit
 ========================= */
 var form = document.getElementById('payment-form');
-var submitButton = document.getElementById('submit-button');
 
+var submitButton = document.getElementById('submit-button');
+if (form) {
 form.addEventListener('submit', function(ev) {
     ev.preventDefault();
 
@@ -90,3 +91,4 @@ form.addEventListener('submit', function(ev) {
         }
     });
 });
+}
