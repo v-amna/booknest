@@ -1,5 +1,7 @@
 
 from django.contrib import messages
+from .forms import ReviewForm
+from .models import Review
 from django.contrib.auth.decorators import login_required
 from .forms import BookForm
 from django.shortcuts import get_object_or_404, render, redirect
@@ -156,3 +158,49 @@ def delete_book(request, book_id):
     )
 
     return redirect("books")
+
+@login_required
+def add_review(request, book_id):
+
+    book = get_object_or_404(
+        Book,
+        pk=book_id
+    )
+
+    if request.method == "POST":
+
+        form = ReviewForm(request.POST)
+
+        if form.is_valid():
+
+            review = form.save(commit=False)
+
+            review.user = request.user
+            review.book = book
+
+            review.save()
+
+            messages.success(
+                request,
+                "Review added successfully."
+            )
+
+            return redirect(
+                "book_detail",
+                book_id=book.id
+            )
+
+    else:
+
+        form = ReviewForm()
+
+    context = {
+        "book": book,
+        "form": form,
+    }
+
+    return render(
+        request,
+        "books/add_review.html",
+        context
+    )
