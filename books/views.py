@@ -262,3 +262,34 @@ def edit_review(request, review_id):
         "books/edit_review.html",
         context
     )
+@login_required
+def delete_review(request, review_id):
+
+    review = get_object_or_404(
+        Review,
+        pk=review_id
+    )
+
+    if review.user != request.user:
+
+        messages.error(
+            request,
+            "You can only delete your own reviews."
+        )
+
+        return redirect(
+            "book_detail",
+            book_id=review.book.id
+        )
+
+    review.delete()
+
+    messages.success(
+        request,
+        "Review deleted successfully."
+    )
+
+    return redirect(
+        "book_detail",
+        book_id=review.book.id
+    )
