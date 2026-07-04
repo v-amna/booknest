@@ -61,6 +61,18 @@ class Order(models.Model):
         decimal_places=2,
         default=0
     )
+    # STRIPE + WEBHOOK CORE
+    
+    stripe_pid = models.CharField(
+        max_length=254,
+        null=True,
+        blank=True,
+        unique=True
+    )
+
+    # Optional (debug / coursework evidence)
+    original_cart = models.TextField(blank=True)
+
     def update_total(self):
 
         self.order_total = (
