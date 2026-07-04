@@ -3,7 +3,6 @@ from .models import Order
 
 
 class OrderForm(forms.ModelForm):
-
     class Meta:
         model = Order
 
@@ -16,7 +15,13 @@ class OrderForm(forms.ModelForm):
             'town_or_city',
             'postcode',
             'country',
+            'stripe_pid',
         ]
+
+        widgets = {
+            'stripe_pid': forms.HiddenInput(),
+        }
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 

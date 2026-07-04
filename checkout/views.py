@@ -2,7 +2,7 @@ import json
 from urllib import request
 import cart
 from profiles.models import UserProfile
-from django.shortcuts import render, redirect,get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 
 from profiles.views import profile
 from .models import Order
@@ -43,16 +43,17 @@ def cache_checkout_data(request):
     except Exception as e:
         messages.error(
             request,
-            "Sorry, your payment cannot be processed right now. Please try again later."
+            "Sorry, your payment cannot be processed right now." +
+            " Please try again later."
         )
         return HttpResponse(content=str(e), status=400)
 
-def checkout(request):
 
+def checkout(request):
     stripe_public_key = settings.STRIPE_PUBLIC_KEY
     stripe_secret_key = settings.STRIPE_SECRET_KEY
 
-    cart=request.session.get('cart', {})
+    cart = request.session.get('cart', {})
     cart_items = []
     total = 0
 
@@ -78,11 +79,6 @@ def checkout(request):
     stripe_total = round(grand_total * 100)
     stripe.api_key = stripe_secret_key
 
-    intent = stripe.PaymentIntent.create(
-        amount=stripe_total,
-        currency=settings.STRIPE_CURRENCY,
-    )
-
     if request.method == "POST":
 
         form = OrderForm(request.POST)
@@ -96,12 +92,11 @@ def checkout(request):
                 profile = UserProfile.objects.filter(user=request.user).first()
 
                 if profile:
-                        order.user_profile = profile
+                    order.user_profile = profile
 
             order.save()
 
             for item_id, quantity in cart.items():
-
                 book = get_object_or_404(
                     Book,
                     pk=item_id
@@ -122,15 +117,21 @@ def checkout(request):
             return redirect(
                 'checkout_success',
                 order_id=order.id
-        )
+            )
 
     else:
-
+        # Create a new payment intent on GET
+        intent = stripe.PaymentIntent.create(
+            amount=stripe_total,
+            currency=settings.STRIPE_CURRENCY,
+        )
         form = OrderForm()
+        form.fields['stripe_pid'].initial = intent.id
     if not stripe_public_key:
         messages.warning(
             request,
-            'Stripe public key is missing. Please set it in your environment variables.'
+            'Stripe public key is missing.'
+            + 'Please set it in your environment variables.'
         )
 
     context = {
@@ -149,8 +150,8 @@ def checkout(request):
         context
     )
 
-def checkout_success(request, order_id):
 
+def checkout_success(request, order_id):
     order = get_object_or_404(
         Order,
         pk=order_id
