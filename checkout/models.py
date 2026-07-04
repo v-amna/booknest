@@ -6,10 +6,15 @@ from django.db.models import Sum
 from django_countries.fields import CountryField
 
 
-# Create your models here.
-
-
 class Order(models.Model):
+    class PaymentStatus(models.TextChoices):
+        """ Enum-like class for payment statuses.
+            based on Ref: https://docs.stripe.com/payments/payment-intents/verifying-status#payment-status-mapping
+        """
+        pending = "PD", "Pending"
+        succeeded = "IS", "Succeeded"
+        failed = "FL", "Failed"
+
     user_profile = models.ForeignKey(
         UserProfile,
         on_delete=models.SET_NULL,
@@ -60,17 +65,20 @@ class Order(models.Model):
         decimal_places=2,
         default=0
     )
-    # STRIPE + WEBHOOK CORE
 
+    payment_status = models.CharField(
+        max_length=2,
+        choices=PaymentStatus,
+        default=PaymentStatus.pending
+    )
+
+    # STRIPE + WEBHOOK CORE
     stripe_pid = models.CharField(
         max_length=254,
         null=True,
         blank=True,
         unique=True
     )
-
-    # Optional (debug / coursework evidence)
-    original_cart = models.TextField(blank=True)
 
     def update_total(self):
         self.order_total = (
