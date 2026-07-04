@@ -43,7 +43,7 @@
 
             <div class="col-md-6">
                 <div class="card h-100 shadow-sm">
-                    <div class="card-header bg-white">
+                    <div class="card-header bg-black">
                         <h5 class="mb-0">Customer Details</h5>
                     </div>
                     <div class="card-body">
@@ -63,7 +63,7 @@
 
             <div class="col-md-6">
                 <div class="card h-100 shadow-sm">
-                    <div class="card-header bg-white">
+                    <div class="card-header bg-black">
                         <h5 class="mb-0">Delivery Address</h5>
                     </div>
                     <div class="card-body">
@@ -94,7 +94,7 @@
         </div>
 
         <div class="card shadow-sm mb-4">
-            <div class="card-header bg-white">
+            <div class="card-header bg-black">
                 <h5 class="mb-0">Items Purchased</h5>
             </div>
             <div class="table-responsive">
@@ -109,7 +109,11 @@
                     <tbody>
                         {% for item in order.lineitems.all %}
                             <tr>
-                                <td>{{ item.book.title }}</td>
+                                <td>
+                                    <a href="{% url 'book_detail' item.book.id %}">
+                                        {{ item.book.title }}
+                                    </a>
+                                </td>
                                 <td class="text-center">{{ item.quantity }}</td>
                                 <td class="text-end">€{{ item.lineitem_total }}</td>
                             </tr>

@@ -1,94 +1,114 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block extra_title %}Shopping Cart{% endblock %}
 
+{% block extra_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'cart/css/cart.css' %}">
+{% endblock %}
+
 {% block content %}
 
-<div class="container">
+<div class="container cart-page">
 
     <h1 class="mb-4">Shopping Cart</h1>
 
     {% if cart_items %}
 
-        {% for item in cart_items %}
+        <div class="card shadow-sm mb-4">
 
-            <div class="card mb-3">
-
-                <div class="card-body">
-
-                    <h5>{{ item.book.title }}</h5>
-
-                    <p>Author: {{ item.book.author }}</p>
-
-                    <p>Price: €{{ item.book.price }}</p>
-
-                    <p>
-                        <strong>
-                            Subtotal: €{{ item.subtotal }}
-                        </strong>
-                    </p>
-
-                    <form action="{% url 'update_cart' item.book.id %}"
-                          method="POST"
-                          class="mt-3">
-
-                        {% csrf_token %}
-
-                        <label for="quantity-{{ item.book.id }}">
-                            Quantity:
-                        </label>
-
-                        <input
-                            id="quantity-{{ item.book.id }}"
-                            type="number"
-                            name="quantity"
-                            value="{{ item.quantity }}"
-                            min="1">
-
-                        <button
-                            type="submit"
-                            class="btn btn-primary btn-sm">
-
-                            Update
-
-                        </button>
-                        <a href="{% url 'remove_from_cart' item.book.id %}"
-                            class="btn btn-danger btn-sm">
-
-                             Remove
-
-                        </a>
-
-                    </form>
-
-                </div>
-
+            <div class="card-header bg-black">
+                <h5 class="mb-0">Items in your cart</h5>
             </div>
 
-        {% endfor %}
+            <div class="table-responsive">
+                <table class="table align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>Book</th>
+                            <th>Author</th>
+                            <th class="text-end">Price</th>
+                            <th class="text-center">Quantity</th>
+                            <th class="text-end">Subtotal</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in cart_items %}
+                            <tr>
+                                <td>
+                                    <a href="{% url 'book_detail' item.book.id %}">
+                                        {{ item.book.title }}
+                                    </a>
+                                </td>
+                                <td>{{ item.book.author }}</td>
+                                <td class="text-end">€{{ item.book.price }}</td>
+                                <td>
+                                    <form action="{% url 'update_cart' item.book.id %}"
+                                          method="POST"
+                                          class="d-flex justify-content-center align-items-center gap-2">
 
-        <div class="text-end mt-4">
+                                        {% csrf_token %}
 
-            <h3>Total: €{{ total }}</h3>
-            
+                                        <input
+                                            id="quantity-{{ item.book.id }}"
+                                            type="number"
+                                            name="quantity"
+                                            value="{{ item.quantity }}"
+                                            min="1"
+                                            class="form-control form-control-sm"
+                                            style="width: 4.5rem;">
+
+                                        <button
+                                            type="submit"
+                                            class="btn btn-primary btn-sm">
+
+                                            Update
+
+                                        </button>
+                                    </form>
+                                </td>
+                                <td class="text-end fw-bold">€{{ item.subtotal }}</td>
+                                <td class="text-end">
+                                    <a href="{% url 'remove_from_cart' item.book.id %}"
+                                        class="btn btn-danger btn-sm">
+
+                                         Remove
+
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="4" class="text-end">Total</th>
+                            <th class="text-end" colspan="2">€{{ total }}</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
         </div>
-        <div class="d-flex justify-content-between mt-4">
 
-    <a href="{% url 'books' %}"
-       class="btn btn-outline-secondary">
+        <div class="d-flex justify-content-between">
 
-        Continue Shopping
+            <a href="{% url 'books' %}"
+               class="btn btn-outline-secondary">
 
-    </a>
+                Continue Shopping
 
-    <a href="{% url 'checkout' %}"
-       class="btn btn-success">
+            </a>
 
-        Secure Checkout
+            <a href="{% url 'checkout' %}"
+               class="btn btn-success">
 
-    </a>
+                Secure Checkout
 
-</div>
+            </a>
+
+        </div>
 
     {% else %}
 
