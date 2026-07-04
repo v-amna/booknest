@@ -1,5 +1,10 @@
+import json
+from urllib import request
+import cart
 from profiles.models import UserProfile
 from django.shortcuts import render, redirect,get_object_or_404
+
+from profiles.views import profile
 from .models import Order
 from django.contrib import messages
 from books.models import Book
@@ -7,9 +12,40 @@ from django.conf import settings
 import stripe
 from .forms import OrderForm
 from .models import Order, OrderLineItem
+from django.http import HttpResponse
+from django.views.decorators.http import require_POST
 
 
+@require_POST
+def cache_checkout_data(request):
+    """Attach checkout metadata to the Stripe PaymentIntent."""
 
+    try:
+        pid = request.POST.get("client_secret").split("_secret")[0]
+
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+
+        stripe.PaymentIntent.modify(
+            pid,
+            metadata={
+                "cart": json.dumps(request.session.get("cart", {})),
+                "save_info": request.POST.get("save_info", ""),
+                "username": (
+                    request.user.username
+                    if request.user.is_authenticated
+                    else "AnonymousUser"
+                ),
+            },
+        )
+
+        return HttpResponse(status=200)
+
+    except Exception as e:
+        messages.error(
+            request,
+            "Sorry, your payment cannot be processed right now. Please try again later."
+        )
+        return HttpResponse(content=str(e), status=400)
 
 def checkout(request):
 
@@ -34,6 +70,10 @@ def checkout(request):
 
     delivery = 0
     grand_total = total + delivery
+    if not cart:
+        messages.error(request, "Your cart is empty.")
+        return redirect("view_cart")
+
     # Create Stripe PaymentIntent
     stripe_total = round(grand_total * 100)
     stripe.api_key = stripe_secret_key
@@ -53,11 +93,10 @@ def checkout(request):
 
             if request.user.is_authenticated:
 
-                profile = UserProfile.objects.get(
-                    user=request.user
-            )
+                profile = UserProfile.objects.filter(user=request.user).first()
 
-                order.user_profile = profile
+                if profile:
+                        order.user_profile = profile
 
             order.save()
 

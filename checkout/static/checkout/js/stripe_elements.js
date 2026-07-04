@@ -50,45 +50,79 @@ card.addEventListener('change', function(event) {
    Handle form submit
 ========================= */
 var form = document.getElementById('payment-form');
-
 var submitButton = document.getElementById('submit-button');
-if (form) {
-form.addEventListener('submit', function(ev) {
-    ev.preventDefault();
 
-    card.update({ 'disabled': true });
+if (form) {
+    form.addEventListener('submit', function(ev) {
+
+        ev.preventDefault();
+
+    card.update({ disabled: true });
     submitButton.disabled = true;
 
-    stripe.confirmCardPayment(clientSecret, {
-        payment_method: {
-            card: card,
-            billing_details: {
-                name: form.full_name.value,
-                email: form.email.value,
-                phone: form.phone_number.value,
-                address: {
-                    line1: form.street_address1.value,
-                    line2: form.street_address2.value,
-                    city: form.town_or_city.value,
-                    postal_code: form.postcode.value,
-                    country: form.country.value
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+
+    var postData = {
+        csrfmiddlewaretoken: csrfToken,
+        client_secret: clientSecret,
+        save_info: false,
+    };
+
+    $.post('/checkout/cache_checkout_data/', postData)
+        .done(function() {
+
+            stripe.confirmCardPayment(clientSecret, {
+
+                payment_method: {
+                    card: card,
+                    billing_details: {
+                        name: $.trim(form.full_name.value),
+                        phone: $.trim(form.phone_number.value),
+                        email: $.trim(form.email.value),
+                        address: {
+                            line1: $.trim(form.street_address1.value),
+                            line2: $.trim(form.street_address2.value),
+                            city: $.trim(form.town_or_city.value),
+                            postal_code: $.trim(form.postcode.value),
+                            country: $.trim(form.country.value),
+                        }
+                    }
+                },
+
+                shipping: {
+                    name: $.trim(form.full_name.value),
+                    phone: $.trim(form.phone_number.value),
+                    address: {
+                        line1: $.trim(form.street_address1.value),
+                        line2: $.trim(form.street_address2.value),
+                        city: $.trim(form.town_or_city.value),
+                        postal_code: $.trim(form.postcode.value),
+                        country: $.trim(form.country.value),
+                    }
                 }
-            }
-        }
-    }).then(function(result) {
 
-        if (result.error) {
-            var errorDiv = document.getElementById('card-errors');
-            errorDiv.textContent = result.error.message;
+            }).then(function(result) {
 
-            card.update({ 'disabled': false });
-            submitButton.disabled = false;
+                if (result.error) {
 
-        } else {
-            if (result.paymentIntent.status === 'succeeded') {
-                form.submit();
-            }
-        }
-    });
-});
-}
+                    var errorDiv = document.getElementById('card-errors');
+                    errorDiv.textContent = result.error.message;
+
+                    card.update({ disabled: false });
+                    submitButton.disabled = false;
+
+                } else {
+
+                    if (result.paymentIntent.status === 'succeeded') {
+                        form.submit();
+                    }
+                }
+
+            });
+
+        })
+        .fail(function() {
+            location.reload();
+        });
+
+});}
