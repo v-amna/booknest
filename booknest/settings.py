@@ -29,7 +29,9 @@ SECRET_KEY = os.environ.get('SECRET_KEY', "django-insecure-secret")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost',
+                 '127.0.0.1',
+                 'booknest-1-5c0fa7f9a116.herokuapp.com']
 
 # Application definition
 
