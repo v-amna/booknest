@@ -3,6 +3,7 @@ import stripe
 from django.http import HttpResponse
 from checkout.models import Order, OrderLineItem
 from books.models import Book
+from profiles.models import UserProfile
 
 
 class StripeWH_Handler:
@@ -29,6 +30,10 @@ class StripeWH_Handler:
 
         # Load cart from Stripe metadata
         cart = json.loads(intent.metadata.cart)
+
+        # Load user from metadata by username
+        username = intent.metadata.username
+        user = UserProfile.objects.get(username=username)
 
         # Get charge object (modern Stripe approach)
         stripe_charge = stripe.Charge.retrieve(
@@ -60,6 +65,7 @@ class StripeWH_Handler:
         # =========================
         try:
             order = Order.objects.create(
+                user_profile=user,
                 full_name=shipping.name,
                 email=billing_details.email,
                 phone_number=billing_details.phone,
