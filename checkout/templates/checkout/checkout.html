@@ -10,36 +10,32 @@
 
 {% block content %}
 
-<div class="container">
+    <div class="container">
 
-    <h1>Checkout</h1>
+        <h1>Checkout</h1>
 
-    <form method="POST" id="payment-form">
+        <form method="POST" id="payment-form">
 
-        {% csrf_token %}
+            {% csrf_token %}
 
-        {{ form.as_p }}
-        <fieldset>
-            <legend>Payment</legend>
+            {{ form.as_p }}
+            <fieldset>
+                <legend>Payment</legend>
 
-            <!-- Stripe card element mounts here -->
-            <div id="card-element"></div>
+                <!-- Stripe card element mounts here -->
+                <div id="card-element"></div>
 
-            <!-- Errors will show here -->
-            <div id="card-errors" role="alert"></div>
-        </fieldset>
+                <!-- Errors will show here -->
+                <div id="card-errors" role="alert"></div>
+            </fieldset>
 
-        <button id="submit-button"
-            type="submit"
-            class="btn btn-success">
+            <button id="submit-button" type="submit" class="btn btn-success">
+                Complete Order
+            </button>
 
-            Complete Order
+        </form>
 
-        </button>
-
-    </form>
-
-</div>
+    </div>
 
 {% endblock %}
 {% block postloadjs %}
