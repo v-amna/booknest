@@ -40,7 +40,7 @@ class StripeWH_Handler:
         grand_total = round(stripe_charge.amount / 100, 2)
 
         # Clean empty shipping fields
-        for field, value in shipping.address.items():
+        for field, value in shipping.address.to_dict().items():
             if value == "":
                 shipping.address[field] = None
 
