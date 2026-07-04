@@ -3,7 +3,7 @@ import stripe
 from django.http import HttpResponse
 from checkout.models import Order, OrderLineItem
 from books.models import Book
-from profiles.models import UserProfile
+from django.contrib.auth.models import User
 
 
 class StripeWH_Handler:
@@ -33,7 +33,7 @@ class StripeWH_Handler:
 
         # Load user from metadata by username
         username = intent.metadata.username
-        user = UserProfile.objects.get(username=username)
+        user = User.objects.get(username=username)
 
         # Get charge object (modern Stripe approach)
         stripe_charge = stripe.Charge.retrieve(
