@@ -51,7 +51,7 @@ def add_to_cart(request, item_id):
 
     messages.success(
         request,
-        f'{book.title} added to your cart.'
+        f'"{book.title}" added to your cart.'
     )
 
     return redirect('view_cart')
