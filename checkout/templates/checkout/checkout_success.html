@@ -1,114 +1,136 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block extra_title %}
-Order Confirmation
+    Order Confirmation
+{% endblock %}
+
+{% block extra_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'checkout/css/checkout.css' %}">
 {% endblock %}
 
 {% block content %}
 
-<div class="container">
+    <div class="container checkout-success">
 
-    <h1 class="mb-4">
-        Thank You!
-    </h1>
+        <div class="text-center mb-5">
+            <h1 class="mb-2">Thank You!</h1>
+            <p class="text-muted">Your order has been successfully placed.</p>
+        </div>
 
-    <p>
-        Your order has been successfully placed.
-    </p>
+        <div class="card shadow-sm mb-4">
+            <div class="card-body d-flex flex-wrap justify-content-between align-items-center gap-3">
+                <dl class="mb-0">
+                    <dt class="text-muted small text-uppercase">Order Number</dt>
+                    <dd class="mb-0 fs-5">{{ order.id }}</dd>
+                </dl>
+                <dl class="mb-0 text-end">
+                    <dt class="text-muted small text-uppercase">Payment Status</dt>
+                    <dd class="mb-0">
+                        <span class="badge fs-6
+                            {% if order.payment_status == 'IS' %}bg-success
+                            {% elif order.payment_status == 'FL' %}bg-danger
+                            {% else %}bg-warning text-dark{% endif %}">
+                            {{ order.get_payment_status_display }}
+                        </span>
+                    </dd>
+                </dl>
+            </div>
+        </div>
 
-    <hr>
+        <div class="row g-4 mb-4">
 
-    <h4>
-        Order Number
-    </h4>
+            <div class="col-md-6">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0">Customer Details</h5>
+                    </div>
+                    <div class="card-body">
+                        <dl class="row mb-0">
+                            <dt class="col-sm-4">Name</dt>
+                            <dd class="col-sm-8">{{ order.full_name }}</dd>
 
-    <p>
-        {{ order.id }}
-    </p>
+                            <dt class="col-sm-4">Email</dt>
+                            <dd class="col-sm-8">{{ order.email }}</dd>
 
-    <hr>
+                            <dt class="col-sm-4">Phone</dt>
+                            <dd class="col-sm-8 mb-0">{{ order.phone_number }}</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
 
-    <h4>
-        Customer Details
-    </h4>
+            <div class="col-md-6">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0">Delivery Address</h5>
+                    </div>
+                    <div class="card-body">
+                        <dl class="row mb-0">
+                            <dt class="col-sm-4">Address</dt>
+                            <dd class="col-sm-8">
+                                {{ order.street_address1 }}
+                                {% if order.street_address2 %}
+                                    <br>{{ order.street_address2 }}
+                                {% endif %}
+                            </dd>
 
-    <p>
-        <strong>Name:</strong>
-        {{ order.full_name }}
-    </p>
+                            <dt class="col-sm-4">Town / City</dt>
+                            <dd class="col-sm-8">{{ order.town_or_city }}</dd>
 
-    <p>
-        <strong>Email:</strong>
-        {{ order.email }}
-    </p>
+                            {% if order.postcode %}
+                                <dt class="col-sm-4">Postcode</dt>
+                                <dd class="col-sm-8">{{ order.postcode }}</dd>
+                            {% endif %}
 
-    <p>
-        <strong>Phone:</strong>
-        {{ order.phone_number }}
-    </p>
+                            <dt class="col-sm-4">Country</dt>
+                            <dd class="col-sm-8 mb-0">{{ order.country }}</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
 
-    <hr>
+        </div>
 
-    <h4>
-        Delivery Address
-    </h4>
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Items Purchased</h5>
+            </div>
+            <div class="table-responsive">
+                <table class="table align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>Book</th>
+                            <th class="text-center">Quantity</th>
+                            <th class="text-end">Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in order.lineitems.all %}
+                            <tr>
+                                <td>{{ item.book.title }}</td>
+                                <td class="text-center">{{ item.quantity }}</td>
+                                <td class="text-end">€{{ item.lineitem_total }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="2" class="text-end">Total</th>
+                            <th class="text-end">€{{ order.order_total }}</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
 
-    <p>
-        {{ order.street_address1 }}
-    </p>
+        <div class="text-center">
+            <a href="{% url 'books' %}" class="btn btn-primary btn-lg">
+                Continue Shopping
+            </a>
+        </div>
 
-    {% if order.street_address2 %}
-        <p>{{ order.street_address2 }}</p>
-    {% endif %}
-
-    <p>
-        {{ order.town_or_city }}
-    </p>
-
-    {% if order.postcode %}
-        <p>{{ order.postcode }}</p>
-    {% endif %}
-
-    <p>
-        {{ order.country }}
-    </p>
-
-    <hr>
-
-    <h4>
-        Items Purchased
-    </h4>
-
-    {% for item in order.lineitems.all %}
-
-        <p>
-
-            {{ item.book.title }}
-
-            ×
-
-            {{ item.quantity }}
-
-        </p>
-
-    {% endfor %}
-
-    <hr>
-
-    <h3>
-
-        Total:
-        €{{ order.order_total }}
-
-    </h3>
-
-    <a href="{% url 'books' %}"
-       class="btn btn-primary">
-
-        Continue Shopping
-
-    </a>
-
-</div>
+    </div>
 
 {% endblock %}

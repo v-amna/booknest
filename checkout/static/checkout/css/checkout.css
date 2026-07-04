@@ -24,3 +24,15 @@
 .stripe-style-input::placeholder {
     color: #aab7c4;
 }
+
+.checkout-success dt {
+    font-weight: 600;
+}
+
+.checkout-success .card {
+    border: none;
+}
+
+.checkout-success .table tfoot th {
+    font-size: 1.1rem;
+}
