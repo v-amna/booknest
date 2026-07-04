@@ -65,7 +65,7 @@ class StripeWH_Handler:
         # =========================
         try:
             order = Order.objects.create(
-                user_profile=user,
+                user_profile=user.userprofile,
                 full_name=shipping.name,
                 email=billing_details.email,
                 phone_number=billing_details.phone,
