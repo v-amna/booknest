@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block extra_title %}
+Sign In
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <h2 class="mb-4">
+
+        {% trans "Sign In" %}
+
+    </h2>
+
+    <p class="mb-4">
+
+        {% blocktrans %}If you have not created an account yet, then please <a href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}
+
+    </p>
+
+    <form method="POST" action="{% url 'account_login' %}">
+
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        {{ redirect_field }}
+
+        <button
+            type="submit"
+            class="btn btn-primary">
+
+            {% trans "Sign In" %}
+
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}
