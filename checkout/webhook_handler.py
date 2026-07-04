@@ -11,7 +11,7 @@ class StripeWH_Handler:
 
     def __init__(self, request):
         self.request = request
-        
+
     def handle_event(self, event):
         """
         Handle a generic/unknown/unexpected webhook event
@@ -19,7 +19,7 @@ class StripeWH_Handler:
         return HttpResponse(
             content=f'Webhook received: {event["type"]}',
             status=200)
-    
+
     def handle_payment_intent_succeeded(self, event):
         """
         Handle successful Stripe payment_intent.succeeded webhook
@@ -27,6 +27,24 @@ class StripeWH_Handler:
 
         intent = event.data.object
         pid = intent.id
+
+        # Check if already exists
+        order = Order.objects.filter(stripe_pid=pid).first()
+
+        if order and order.payment_status != Order.PaymentStatus.succeeded:
+            order.payment_status = Order.PaymentStatus.succeeded
+            order.save()
+            return HttpResponse(
+                content=f'Webhook received: {event["type"]}' +
+                        ' | Order payment succeeded',
+                status=200
+            )
+
+        if order:
+            return HttpResponse(
+                content=f'Webhook received: {event["type"]} | Order exists',
+                status=200
+            )
 
         # Load cart from Stripe metadata
         cart = json.loads(intent.metadata.cart)
@@ -49,20 +67,7 @@ class StripeWH_Handler:
             if value == "":
                 shipping.address[field] = None
 
-        # =========================
-        # CHECK IF ORDER EXISTS (IDEMPOTENCY)
-        # =========================
-        order = Order.objects.filter(stripe_pid=pid).first()
-
-        if order:
-            return HttpResponse(
-                content=f'Webhook received: {event["type"]} | Order already exists',
-                status=200
-            )
-
-        # =========================
-        # CREATE ORDER
-        # =========================
+        # Creates order
         try:
             order = Order.objects.create(
                 user_profile=user.userprofile,
@@ -78,9 +83,6 @@ class StripeWH_Handler:
                 stripe_pid=pid,
             )
 
-            # =========================
-            # CREATE ORDER LINE ITEMS
-            # =========================
             for item_id, quantity in cart.items():
 
                 try:
@@ -96,7 +98,7 @@ class StripeWH_Handler:
                     order.delete()
                     return HttpResponse(
                         content=f'Webhook ERROR: Book {item_id} not found',
-                        status=500
+                        status=400
                     )
 
         except Exception as e:
@@ -112,11 +114,18 @@ class StripeWH_Handler:
             content=f'Webhook received: {event["type"]} | Order created',
             status=200
         )
+
+
     def handle_payment_intent_payment_failed(self, event):
         """
         Handle the payment_intent.payment_failed webhook from Stripe.
         """
+        pid = event.data.object.id
+        order = Order.objects.filter(stripe_pid=pid).first()
+        if order:
+            order.payment_status = Order.PaymentStatus.failed
+            order.save()
         return HttpResponse(
-            content=f'Webhook received: {event["type"]}',
+            content=f'Webhook received: {event["type"]} | Order payment failed',
             status=200
         )
