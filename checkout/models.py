@@ -5,12 +5,11 @@ from books.models import Book
 from django.db.models import Sum
 from django_countries.fields import CountryField
 
+
 # Create your models here.
 
 
-
 class Order(models.Model):
-
     user_profile = models.ForeignKey(
         UserProfile,
         on_delete=models.SET_NULL,
@@ -49,7 +48,7 @@ class Order(models.Model):
     )
 
     country = CountryField(
-         blank_label="Select Country"
+        blank_label="Select Country"
     )
 
     date = models.DateTimeField(
@@ -62,7 +61,7 @@ class Order(models.Model):
         default=0
     )
     # STRIPE + WEBHOOK CORE
-    
+
     stripe_pid = models.CharField(
         max_length=254,
         null=True,
@@ -74,13 +73,10 @@ class Order(models.Model):
     original_cart = models.TextField(blank=True)
 
     def update_total(self):
-
         self.order_total = (
-        self.lineitems.aggregate(
-            Sum('lineitem_total')
-        )['lineitem_total__sum']
-        or 0
-    )
+                self.lineitems.aggregate(
+                    Sum('lineitem_total'))['lineitem_total__sum'] or 0
+        )
 
         self.save()
 
@@ -89,7 +85,6 @@ class Order(models.Model):
 
 
 class OrderLineItem(models.Model):
-
     order = models.ForeignKey(
         Order,
         on_delete=models.CASCADE,
@@ -112,21 +107,17 @@ class OrderLineItem(models.Model):
     )
 
     def save(self, *args, **kwargs):
-
         self.lineitem_total = (
-            self.book.price * self.quantity
+                self.book.price * self.quantity
         )
 
         super().save(*args, **kwargs)
         self.order.update_total()
 
-    
-        #self.save()
+        # self.save()
 
     def __str__(self):
         return (
             f"{self.book.title} "
             f"on Order {self.order.id}"
         )
-    
-    
