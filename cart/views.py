@@ -1,18 +1,17 @@
-from django.shortcuts import redirect, render , get_object_or_404
+from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib import messages
+from django.http import JsonResponse
 
 from books.models import Book
 
-# Create your views here.
-def view_cart(request):
 
+def view_cart(request):
     cart = request.session.get('cart', {})
 
     cart_items = []
     total = 0
 
     for item_id, quantity in cart.items():
-
         book = get_object_or_404(Book, pk=item_id)
 
         subtotal = book.price * quantity
@@ -34,20 +33,31 @@ def view_cart(request):
         'cart/cart.html',
         context
     )
-def add_to_cart(request, item_id):
 
+
+def _add_to_cart(request, item_id):
     book = get_object_or_404(Book, pk=item_id)
-
     cart = request.session.get('cart', {})
-
     item_id = str(item_id)
-
     if item_id in cart:
         cart[item_id] += 1
     else:
         cart[item_id] = 1
-
     request.session['cart'] = cart
+    return cart, book, request
+
+
+def add_to_cart_ajax(request, item_id):
+    cart, book, request = _add_to_cart(request, item_id)
+    return JsonResponse({
+        'success': True,
+        'message': f'"{book.title}" added to your cart.',
+        'cart_count': sum(cart.values()),
+    })
+
+
+def add_to_cart(request, item_id):
+    cart, book, request = _add_to_cart(request, item_id)
 
     messages.success(
         request,
@@ -55,8 +65,9 @@ def add_to_cart(request, item_id):
     )
 
     return redirect('view_cart')
-def update_cart(request, item_id):
 
+
+def update_cart(request, item_id):
     quantity = int(request.POST.get('quantity'))
 
     cart = request.session.get('cart', {})
@@ -73,8 +84,8 @@ def update_cart(request, item_id):
 
     return redirect('view_cart')
 
-def remove_from_cart(request, item_id):
 
+def remove_from_cart(request, item_id):
     cart = request.session.get('cart', {})
 
     item_id = str(item_id)

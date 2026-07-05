@@ -1,21 +1,19 @@
-
 from django.contrib import messages
 from .forms import ReviewForm
 from .models import Review
 from django.contrib.auth.decorators import login_required
 from .forms import BookForm
+from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, render, redirect
 from django.db.models import Q
-from books.models import Book,Category
+from books.models import Book, Category
 
 
-
-# Create your views here.
 def book_list(request):
-    books = Book.objects.all()
+    books = Book.objects.all().order_by('title')
     categories = Category.objects.all()
     query = request.GET.get('q')
-    category=request.GET.get('category')
+    category = request.GET.get('category')
 
     if query:
         books = books.filter(
@@ -24,9 +22,15 @@ def book_list(request):
             Q(isbn__icontains=query)
         )
     if category:
-        books = books.filter(category__name=category    )
-    
-    return render(request, 'books/book_list.html', {'books': books, 'categories': categories})
+        books = books.filter(category__name=category)
+
+    paginator = Paginator(books, 10)
+    page_number = request.GET.get('page')
+    books_page = paginator.get_page(page_number)
+
+    return render(request, 'books/book_list.html',
+                  {'books': books_page, 'categories': categories})
+
 
 def book_detail(request, book_id):
     book = get_object_or_404(Book, pk=book_id)
@@ -35,9 +39,7 @@ def book_detail(request, book_id):
 
 @login_required
 def add_book(request):
-
     if not request.user.is_superuser:
-
         messages.error(
             request,
             "Sorry, only store administrators can do that."
@@ -53,7 +55,6 @@ def add_book(request):
         )
 
         if form.is_valid():
-
             form.save()
 
             messages.success(
@@ -77,11 +78,10 @@ def add_book(request):
         context
     )
 
+
 @login_required
 def edit_book(request, book_id):
-
     if not request.user.is_superuser:
-
         messages.error(
             request,
             "Sorry, only store administrators can do that."
@@ -103,7 +103,6 @@ def edit_book(request, book_id):
         )
 
         if form.is_valid():
-
             form.save()
 
             messages.success(
@@ -133,11 +132,10 @@ def edit_book(request, book_id):
         context
     )
 
+
 @login_required
 def delete_book(request, book_id):
-
     if not request.user.is_superuser:
-
         messages.error(
             request,
             "Sorry, only store administrators can do that."
@@ -159,9 +157,9 @@ def delete_book(request, book_id):
 
     return redirect("books")
 
+
 @login_required
 def add_review(request, book_id):
-
     book = get_object_or_404(
         Book,
         pk=book_id
@@ -172,7 +170,6 @@ def add_review(request, book_id):
         form = ReviewForm(request.POST)
 
         if form.is_valid():
-
             review = form.save(commit=False)
 
             review.user = request.user
@@ -205,16 +202,15 @@ def add_review(request, book_id):
         context
     )
 
+
 @login_required
 def edit_review(request, review_id):
-
     review = get_object_or_404(
         Review,
         pk=review_id
     )
 
     if review.user != request.user:
-
         messages.error(
             request,
             "You can only edit your own reviews."
@@ -233,7 +229,6 @@ def edit_review(request, review_id):
         )
 
         if form.is_valid():
-
             form.save()
 
             messages.success(
@@ -262,16 +257,16 @@ def edit_review(request, review_id):
         "books/edit_review.html",
         context
     )
+
+
 @login_required
 def delete_review(request, review_id):
-
     review = get_object_or_404(
         Review,
         pk=review_id
     )
 
     if review.user != request.user:
-
         messages.error(
             request,
             "You can only delete your own reviews."
