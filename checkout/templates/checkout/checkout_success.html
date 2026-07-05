@@ -36,6 +36,18 @@
                         </span>
                     </dd>
                 </dl>
+                <dl class="mb-0 text-end">
+                    <dt class="text-muted small text-uppercase">Order Status</dt>
+                    <dd class="mb-0">
+                        <span class="badge fs-6
+                            {% if order.order_status == 'SH' %}bg-success
+                            {% elif order.order_status == 'RT' %}bg-danger
+                            {% elif order.order_status == 'DR' %}bg-info
+                            {% else %}bg-warning text-dark{% endif %}">
+                            {{ order.get_order_status_display }}
+                        </span>
+                    </dd>
+                </dl>
             </div>
         </div>
 

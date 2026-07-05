@@ -15,6 +15,14 @@ class Order(models.Model):
         succeeded = "IS", "Succeeded"
         failed = "FL", "Failed"
 
+    class OrderStatus(models.TextChoices):
+        """ Enum-like class for order statuses. """
+        pending = "PD", "Pending"
+        shipped = "SH", "Shipped"
+        processing = "PR", "Processing"
+        returned = "RT", "Returned"
+        delivered = "DR", "Delivered"
+
     user_profile = models.ForeignKey(
         UserProfile,
         on_delete=models.SET_NULL,
@@ -70,6 +78,12 @@ class Order(models.Model):
         max_length=2,
         choices=PaymentStatus,
         default=PaymentStatus.pending
+    )
+
+    order_status = models.CharField(
+        max_length=2,
+        choices=OrderStatus,
+        default=OrderStatus.pending
     )
 
     # STRIPE + WEBHOOK CORE
