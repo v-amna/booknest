@@ -1,0 +1,11 @@
+.cart-page dt {
+    font-weight: 600;
+}
+
+.cart-page .card {
+    border: none;
+}
+
+.cart-page .card-header {
+    color: #fff;
+}

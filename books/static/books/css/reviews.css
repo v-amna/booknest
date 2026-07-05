@@ -1,0 +1,43 @@
+.rating {
+    border: none;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    padding: 0;
+    margin: 0;
+}
+
+.rating > input {
+    display: none;
+}
+
+.rating > label {
+    position: relative;
+    width: 1.6rem;
+    font-size: 2.5rem;
+    line-height: 1;
+    color: #ddd;
+    cursor: pointer;
+}
+
+.rating > label::before {
+    content: "\2605";
+    position: absolute;
+    color: #ddd;
+}
+
+.rating > label::after {
+    content: "\2605";
+    position: absolute;
+    color: #ffc107;
+    opacity: 0;
+}
+
+.rating > label:hover::after,
+.rating > label:hover ~ label::after {
+    opacity: 1;
+}
+
+.rating > input:checked ~ label::after {
+    opacity: 1;
+}
