@@ -77,16 +77,14 @@
 
                         <div class="card-body">
 
-                            <h5 class="card-title">
-                                {{ book.title }}
-                            </h5>
-
+                            <a class="text-decoration-none link-dark" href="{% url 'book_detail' book.id %}">
+                                <p class="h5 card-title"> {{ book.title }} </p>
+                            </a>
                             <dl class="row mb-3">
                                 <dt class="col-4 fs-6">ISBN</dt>
                                 <dd class="col-8 fs-6">{{ book.isbn }}</dd>
                                 <dt class="col-4 fs-6">Author</dt>
                                 <dd class="col-8 fs-6">{{ book.author }}</dd>
-
                                 <dt class="col-4">Price</dt>
                                 <dd class="col-8 fw-bold mb-0">€{{ book.price }}</dd>
                             </dl>
