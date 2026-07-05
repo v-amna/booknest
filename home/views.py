@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from books.models import Book
+from books.models import Book, Category
+
 
 # Create your views here.
 def index(request):
@@ -7,5 +8,6 @@ def index(request):
 
     context = {
         'featured_books': featured_books,
+        'categories': Category.objects.all(),
     }
     return render(request, 'home/index.html', context)

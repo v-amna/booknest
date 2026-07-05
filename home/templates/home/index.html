@@ -4,96 +4,75 @@
 
 {% block content %}
 
-<!-- Hero Section -->
-<section class="hero-banner text-center">
+    <!-- Hero Section -->
+    <section class="hero-banner text-center">
+        <div class="hero-content">
+            <h1>Discover Your Next Great Read</h1>
+            <p class="lead"> Explore thousands of books across every
+                genre. </p>
+            <a href="{% url 'books' %}"
+               class="btn btn-primary btn-lg">
+                Browse Books
+            </a>
+        </div>
+    </section>
 
-    <div class="hero-content">
+    <!-- Categories -->
+    <section class="categories-section">
 
-        <h1>Discover Your Next Great Read</h1>
+        <h2 class="text-center mb-4">
+            Browse Categories
+        </h2>
+        <div class="category-list">
+            {% for category in categories %}
+                <a class="btn  btn-primary" href="{% url 'books' %}?category={{ category.name }}">
+                    {{ category.name }}
+                </a>
+            {% endfor %}
+        </div>
 
-        <p class="lead">
-            Explore thousands of books across every genre.
-        </p>
+    </section>
 
-        <a href="{% url 'books' %}"
-           class="btn btn-primary btn-lg">
-            Browse Books
-        </a>
+    <!-- Featured Books -->
+    <section class="featured-books">
 
-    </div>
+        <h2 class="text-center mb-4"> Featured Books </h2>
 
-</section>
+        <div class="row">
 
-<!-- Categories -->
-<section class="categories-section">
+            {% for book in featured_books %}
 
-    <h2 class="text-center mb-4">
-        Browse Categories
-    </h2>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 book-card">
 
-    <div class="category-list">
-
-        <span class="category-badge">Fiction</span>
-        <span class="category-badge">Business</span>
-        <span class="category-badge">Technology</span>
-        <span class="category-badge">Romance</span>
-        <span class="category-badge">Self-Help</span>
-        <span class="category-badge">Biography</span>
-
-    </div>
-
-</section>
-
-<!-- Featured Books -->
-<section class="featured-books">
-
-    <h2 class="text-center mb-4">
-        Featured Books
-    </h2>
-
-    
-    <div class="row">
-
-        {% for book in featured_books %}
-
-            <div class="col-md-4 mb-4">
-
-                <div class="card h-100 book-card">
-
-                    {% if book.cover_image %}
-                        <img src="{{ book.cover_image.url }}"
-                             class="card-img-top book-card-image"
-                             alt="{{ book.title }}">
-                    {% endif %}
-
-                    <div class="card-body">
-
-                        <h5>{{ book.title }}</h5>
-
-                        <p class="text-muted">
-                            {{ book.author }}
-                        </p>
-
-                        <p class="fw-bold">
-                            €{{ book.price }}
-                        </p>
-
-                        <a href="{% url 'book_detail' book.id %}"
-                           class="btn btn-primary">
-                            View Details
+                        <a href="{% url 'book_detail' book.id %}">
+                            {% if book.cover_image %}
+                                <img src="{{ book.cover_image.url }}"
+                                     class="card-img-top book-card-image"
+                                     alt="{{ book.title }}">
+                            {% endif %}
                         </a>
 
+                        <div class="card-body">
+                            <a class="text-decoration-none link-dark"
+                               href="{% url 'book_detail' book.id %}">
+                                <p class="h5">{{ book.title }}</p>
+                            </a>
+                            <dl class="row mb-3">
+                                <dt class="col-4 fs-6">ISBN</dt>
+                                <dd class="col-8 fs-6">{{ book.isbn }}</dd>
+                                <dt class="col-4 fs-6">Author</dt>
+                                <dd class="col-8 fs-6">{{ book.author }}</dd>
+                                <dt class="col-4">Price</dt>
+                                <dd class="col-8 fw-bold mb-0">€{{ book.price }}</dd>
+                            </dl>
+                        </div>
                     </div>
-
                 </div>
 
-            </div>
+            {% endfor %}
+        </div>
 
-        {% endfor %}
-
-    </div>
-
-
-</section>
+    </section>
 
 {% endblock %}
