@@ -1,0 +1,26 @@
+{% extends "account/base.html" %}
+{% load i18n %}
+{% load crispy_forms_filters %}
+
+{% block extra_title %} Sign In {% endblock %}
+
+{% block inner_content %}
+    <div class="container py-5">
+        <h2 class="mb-4"> {% trans "Sign In" %} </h2>
+        <p class="mb-4">
+            {% blocktrans %}If you have not created an account yet, then please
+                <a href="{{ signup_url }}">sign up</a>
+                first.{% endblocktrans %} </p>
+
+        <form method="POST" action="{% url 'account_login' %}">
+            {% csrf_token %}
+            {{ form | crispy }}
+            {{ redirect_field }}
+            <a class="btn btn-outline-black rounded-0" href="{% url 'home' %}">Home</a>
+            <button type="submit" class="btn btn-primary">
+                {% trans "Sign In" %}
+            </button>
+        </form>
+    </div>
+{% endblock %}
+

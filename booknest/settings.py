@@ -49,14 +49,16 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'django_countries',
+    'crispy_forms',
+    'crispy_bootstrap5',
 
     "home",
     "books",
     "profiles",
     "cart",
     "checkout",
-    "storages"
-
+    "storages",
+    "anymail",
 ]
 
 MIDDLEWARE = [
@@ -75,17 +77,27 @@ ROOT_URLCONF = "booknest.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / 'templates'],
+        "DIRS": [
+            os.path.join(BASE_DIR, 'templates'),
+            os.path.join(BASE_DIR, 'templates', 'allauth'),
+        ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
-                "django.template.context_processors.request",
+                'django.template.context_processors.request',
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+            ],
+            'builtins': [
+                'crispy_forms.templatetags.crispy_forms_tags',
+                'crispy_forms.templatetags.crispy_forms_field',
             ],
         },
     },
 ]
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 WSGI_APPLICATION = "booknest.wsgi.application"
 
@@ -94,7 +106,7 @@ WSGI_APPLICATION = "booknest.wsgi.application"
 if 'DATABASE_URL' in os.environ:
     DATABASES = {
         'default': dj_database_url.parse(
-            os.environ.get('DATABASE_URL'),
+            os.environ.get('DATABASE_URL', ''),
             conn_max_age=600, ssl_require=True)
     }
 else:
@@ -105,14 +117,14 @@ else:
         }
     }
 
-
-if 'USE_AWS' in os.environ:
+if os.environ.get('USE_AWS', 'False') == 'True':
     # Bucket Config
     AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
     AWS_S3_REGION_NAME = os.environ.get('AWS_S3_REGION_NAME')
     AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com'
+    AWS_S3_CUSTOM_DOMAIN = (f'{AWS_STORAGE_BUCKET_NAME}.s3' +
+                            f'.{AWS_S3_REGION_NAME}.amazonaws.com')
 
     # Static and media files
     STATICFILES_LOCATION = 'static'
@@ -130,6 +142,12 @@ if 'USE_AWS' in os.environ:
     # Override static and media URLs in production
     STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{STATICFILES_LOCATION}/'
     MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{MEDIAFILES_LOCATION}/'
+else:
+    STATIC_URL = "static/"
+    STATIC_ROOT = BASE_DIR / 'staticfiles'
+    # Media files (uploaded images)
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = BASE_DIR / 'media'
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -171,13 +189,6 @@ STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
 
-if 'USE_AWS' not in os.environ:
-    STATIC_URL = "static/"
-    STATIC_ROOT = BASE_DIR / 'staticfiles'
-    # Media files (uploaded images)
-    MEDIA_URL = '/media/'
-    MEDIA_ROOT = BASE_DIR / 'media'
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
@@ -185,6 +196,8 @@ SITE_ID = 1
 
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
 # Stripe
@@ -196,10 +209,15 @@ STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY', '')
 STRIPE_WH_SECRET = os.getenv('STRIPE_WH_SECRET', '')
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-# Email settings (development)
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+EMAIL_BACKEND = "anymail.backends.resend.EmailBackend"
+
+ANYMAIL = {
+    "RESEND_API_KEY": os.environ.get("RESEND_API_KEY"),
+}
+DEFAULT_FROM_EMAIL = "signup@amna.pattanath.com"
 
 # Allauth settings
-ACCOUNT_EMAIL_VERIFICATION = "none"
-ACCOUNT_SIGNUP_FIELDS = ['email', 'username*', 'password1*', 'password2*']
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_LOGIN_METHODS = {"email"}
+ACCOUNT_SIGNUP_FIELDS = ['email*', 'username*', 'password1*', 'password2*']
 LOGIN_REDIRECT_URL = '/profile/'
