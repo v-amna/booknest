@@ -5,13 +5,20 @@ from django.shortcuts import render
 from .forms import UserProfileForm
 from .models import UserProfile
 
-# Create your views here.
 
+@login_required
+def profile_orders(request):
+    profile = UserProfile.objects.get(user=request.user)
+    orders = profile.order_set.all()
 
+    return render(
+        request,
+        'profiles/orders.html',
+        {'orders': orders},
+    )
 
 @login_required
 def profile(request):
-
     profile, created = UserProfile.objects.get_or_create(
         user=request.user
     )
@@ -37,9 +44,9 @@ def profile(request):
         )
 
     context = {
-    'form': form,
-    'orders': profile.order_set.all(),
-}
+        'form': form,
+        'orders': profile.order_set.all(),
+    }
 
     return render(
         request,

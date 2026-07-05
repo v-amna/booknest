@@ -7,13 +7,13 @@
         </a>
 
         <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#main-nav"
-            aria-controls="main-nav"
-            aria-expanded="false"
-            aria-label="Toggle navigation">
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#main-nav"
+                aria-controls="main-nav"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
 
             <span class="navbar-toggler-icon"></span>
 
@@ -22,143 +22,72 @@
         <div class="collapse navbar-collapse" id="main-nav">
 
             <ul class="navbar-nav me-auto">
-
                 <li class="nav-item">
-
-                    <a class="nav-link"
-                       href="{% url 'home' %}">
-
-                        Home
-
-                    </a>
-
+                    <a class="nav-link" href="{% url 'home' %}"> Home </a>
                 </li>
-
                 <li class="nav-item">
-
-                    <a class="nav-link"
-                       href="{% url 'books' %}">
-
-                        Books
-
-                    </a>
-
+                    <a class="nav-link" href="{% url 'books' %}"> Books </a>
                 </li>
-
             </ul>
 
             <ul class="navbar-nav">
-
                 <li class="nav-item">
-
-                    <a class="nav-link"
-                       href="{% url 'view_cart' %}">
-
-                        Cart
-
-                    </a>
-
+                    <a class="nav-link" href="{% url 'view_cart' %}"> Cart </a>
                 </li>
 
                 {% if user.is_authenticated %}
 
-                <li class="nav-item dropdown">
+                    <li class="nav-item dropdown">
 
-                    <a class="nav-link dropdown-toggle"
-                       href="#"
-                       id="profileDropdown"
-                       role="button"
-                       data-bs-toggle="dropdown"
-                       aria-expanded="false">
+                        <a class="nav-link dropdown-toggle"
+                           href="#"
+                           id="profileDropdown"
+                           role="button"
+                           data-bs-toggle="dropdown"
+                           aria-expanded="false"> Profile
+                        </a>
 
-                        Profile
+                        <ul class="dropdown-menu dropdown-menu-end">
 
-                    </a>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'profile' %}"> My Profile </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'profile_orders' %}"> My Orders </a>
+                            </li>
 
-                    <ul class="dropdown-menu dropdown-menu-end">
+                            {% if request.user.is_superuser %}
 
-                        <li>
+                                <li> <hr class="dropdown-divider"> </li>
+                                <li>
+                                    <h6 class="dropdown-header"> Product Management </h6>
+                                </li>
 
-                            <a class="dropdown-item"
-                               href="{% url 'profile' %}">
+                                <li>
+                                    <a class="dropdown-item" href="{% url 'add_book' %}"> Add Book </a>
+                                </li>
 
-                                My Profile
+                            {% endif %}
 
-                            </a>
+                            <li> <hr class="dropdown-divider"> </li>
 
-                        </li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'account_logout' %}"> Logout </a>
+                            </li>
 
-                        {% if request.user.is_superuser %}
+                        </ul>
 
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-
-                        <li>
-
-                            <h6 class="dropdown-header">
-
-                                Product Management
-
-                            </h6>
-
-                        </li>
-
-                        <li>
-
-                            <a class="dropdown-item"
-                               href="{% url 'add_book' %}">
-
-                                Add Book
-
-                            </a>
-
-                        </li>
-
-                        {% endif %}
-
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-
-                        <li>
-
-                            <a class="dropdown-item"
-                               href="{% url 'account_logout' %}">
-
-                                Logout
-
-                            </a>
-
-                        </li>
-
-                    </ul>
-
-                </li>
+                    </li>
 
                 {% else %}
 
-                <li class="nav-item">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'account_signup' %}"> Register </a>
+                    </li>
 
-                    <a class="nav-link"
-                       href="{% url 'account_signup' %}">
-
-                        Register
-
-                    </a>
-
-                </li>
-
-                <li class="nav-item">
-
-                    <a class="nav-link"
-                       href="{% url 'account_login' %}">
-
-                        Login
-
-                    </a>
-
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'account_login' %}"> Login </a>
+                    </li>
 
                 {% endif %}
 
