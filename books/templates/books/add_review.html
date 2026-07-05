@@ -1,7 +1,13 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block extra_title %}
 Add Review
+{% endblock %}
+
+{% block extra_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'books/css/reviews.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -24,7 +30,40 @@ Add Review
 
         {% csrf_token %}
 
-        {{ form.as_p }}
+        <div class="mb-4">
+
+            <label class="form-label d-block">Rating</label>
+
+            <fieldset class="rating">
+                <input type="radio" id="star5" name="rating" value="5" required>
+                <label for="star5" title="5 stars"><span class="visually-hidden">5 stars</span></label>
+
+                <input type="radio" id="star4" name="rating" value="4">
+                <label for="star4" title="4 stars"><span class="visually-hidden">4 stars</span></label>
+
+                <input type="radio" id="star3" name="rating" value="3">
+                <label for="star3" title="3 stars"><span class="visually-hidden">3 stars</span></label>
+
+                <input type="radio" id="star2" name="rating" value="2">
+                <label for="star2" title="2 stars"><span class="visually-hidden">2 stars</span></label>
+
+                <input type="radio" id="star1" name="rating" value="1">
+                <label for="star1" title="1 star"><span class="visually-hidden">1 star</span></label>
+            </fieldset>
+
+            {% if form.rating.errors %}
+                <div class="text-danger small mt-1">
+                    {{ form.rating.errors }}
+                </div>
+            {% endif %}
+
+        </div>
+
+        <div class="mb-4">
+            {{ form.comment.label_tag }}
+            {{ form.comment }}
+            {{ form.comment.errors }}
+        </div>
 
         <button
             type="submit"
