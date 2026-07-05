@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.shortcuts import render
 
 from .forms import UserProfileForm
@@ -9,12 +10,16 @@ from .models import UserProfile
 @login_required
 def profile_orders(request):
     profile = UserProfile.objects.get(user=request.user)
-    orders = profile.order_set.all()
+    orders = profile.order_set.all().order_by('-date')
+
+    paginator = Paginator(orders, 10)
+    page_number = request.GET.get('page')
+    orders_page = paginator.get_page(page_number)
 
     return render(
         request,
         'profiles/orders.html',
-        {'orders': orders},
+        {'orders': orders_page},
     )
 
 @login_required
