@@ -1,53 +1,37 @@
 {% extends "base.html" %}
 
 {% block extra_title %}
-Edit Book
+    Edit Book
 {% endblock %}
 
 {% block content %}
 
-<div class="container">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="card shadow-sm">
+                <div class="card-header bg-black">
+                    <p class="h2 mb-0">Edit Book</p>
+                </div>
+                <div class="card-body">
+                    {% if book.cover_image %}
+                        <div class="mb-3">
+                            <p><strong>Current Cover</strong></p>
+                            <img src="{{ book.cover_image.url }}"
+                                    alt="{{ book.title }}"
+                                    class="img-preview">
+                        </div>
+                    {% endif %}
 
-    <h1 class="mb-4">Edit Book</h1>
-    {% if book.cover_image %}
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form | crispy }}
+                        <button class="btn btn-warning" type="submit"> Save Changes </button>
+                        <a href="{% url 'book_detail' book.id %}" class="btn btn-secondary"> Cancel </a>
+                    </form>
+                </div>
+            </div>
+        </div>
 
-<div class="mb-3">
-
-    <p><strong>Current Cover</strong></p>
-
-    <img
-        src="{{ book.cover_image.url }}"
-        alt="{{ book.title }}"
-        class="img-preview">
-
-</div>
-
-{% endif %}
-
-    <form method="POST"
-          enctype="multipart/form-data">
-
-        {% csrf_token %}
-
-        {{ form.as_p }}
-
-        <button
-            class="btn btn-warning"
-            type="submit">
-
-            Save Changes
-
-        </button>
-
-        <a href="{% url 'book_detail' book.id %}"
-           class="btn btn-secondary">
-
-            Cancel
-
-        </a>
-
-    </form>
-
-</div>
+    </div>
 
 {% endblock %}

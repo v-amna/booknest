@@ -1,9 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block extra_title %}
-Add Review
-{% endblock %}
+{% block extra_title %} Add Review {% endblock %}
 
 {% block extra_css %}
     {{ block.super }}
@@ -12,77 +10,60 @@ Add Review
 
 {% block content %}
 
-<div class="container py-5">
+    <div class="container py-5">
 
-    <h2 class="mb-4">
+    <div class="row justify-content-center">
+    <div class="card shadow-sm">
+        <div class="card-header bg-black">
+            <p class="h2 mb-4"> Add Review </p>
+        </div>
+        <div class="card-body">
+            <p class="lead mb-4"> {{ book.title }} </p>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="mb-4">
+                    <label class="form-label d-block">Rating</label>
+                    <fieldset class="rating">
+                        <input type="radio" id="star5" name="rating" value="5"
+                               required>
+                        <label for="star5" title="5 stars"><span
+                                class="visually-hidden">5 stars</span></label>
 
-        Add Review
+                        <input type="radio" id="star4" name="rating" value="4">
+                        <label for="star4" title="4 stars"><span
+                                class="visually-hidden">4 stars</span></label>
 
-    </h2>
+                        <input type="radio" id="star3" name="rating" value="3">
+                        <label for="star3" title="3 stars"><span
+                                class="visually-hidden">3 stars</span></label>
 
-    <h5 class="mb-4">
+                        <input type="radio" id="star2" name="rating" value="2">
+                        <label for="star2" title="2 stars"><span
+                                class="visually-hidden">2 stars</span></label>
 
-        {{ book.title }}
+                        <input type="radio" id="star1" name="rating" value="1">
+                        <label for="star1" title="1 star"><span
+                                class="visually-hidden">1 star</span></label>
+                    </fieldset>
 
-    </h5>
+                    {% if form.rating.errors %}
+                        <div class="text-danger small mt-1">
+                            {{ form.rating.errors }}
+                        </div>
+                    {% endif %}
 
-    <form method="POST">
-
-        {% csrf_token %}
-
-        <div class="mb-4">
-
-            <label class="form-label d-block">Rating</label>
-
-            <fieldset class="rating">
-                <input type="radio" id="star5" name="rating" value="5" required>
-                <label for="star5" title="5 stars"><span class="visually-hidden">5 stars</span></label>
-
-                <input type="radio" id="star4" name="rating" value="4">
-                <label for="star4" title="4 stars"><span class="visually-hidden">4 stars</span></label>
-
-                <input type="radio" id="star3" name="rating" value="3">
-                <label for="star3" title="3 stars"><span class="visually-hidden">3 stars</span></label>
-
-                <input type="radio" id="star2" name="rating" value="2">
-                <label for="star2" title="2 stars"><span class="visually-hidden">2 stars</span></label>
-
-                <input type="radio" id="star1" name="rating" value="1">
-                <label for="star1" title="1 star"><span class="visually-hidden">1 star</span></label>
-            </fieldset>
-
-            {% if form.rating.errors %}
-                <div class="text-danger small mt-1">
-                    {{ form.rating.errors }}
                 </div>
-            {% endif %}
-
+                <div class="mt-4 mb-4">
+                    {{ form.comment.label_tag }}
+                    {{ form.comment }}
+                    {{ form.comment.errors }}
+                </div>
+                <button type="submit" class="btn btn-primary"> Submit Review
+                </button>
+                <a href="{% url 'book_detail' book.id %}"
+                   class="btn btn-secondary"> Cancel
+                </a>
+            </form>
         </div>
-
-        <div class="mb-4">
-            {{ form.comment.label_tag }}
-            {{ form.comment }}
-            {{ form.comment.errors }}
-        </div>
-
-        <button
-            type="submit"
-            class="btn btn-primary">
-
-            Submit Review
-
-        </button>
-
-        <a
-            href="{% url 'book_detail' book.id %}"
-            class="btn btn-secondary">
-
-            Cancel
-
-        </a>
-
-    </form>
-
-</div>
-
+    </div>
 {% endblock %}
