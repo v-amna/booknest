@@ -5,7 +5,13 @@ from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from books.models import Category
 
-from .forms import CampaignForm, SubscriberForm, UnsubscriberForm
+from .forms import (
+    CampaignForm,
+    SubscriberAdminForm,
+    SubscriberEditForm,
+    SubscriberForm,
+    UnsubscriberForm,
+)
 from .models import Campaign, Subscriber
 
 
@@ -220,3 +226,127 @@ def delete_campaign(request, campaign_id):
     )
 
     return redirect("campaign_list")
+
+
+@login_required
+def subscriber_list(request):
+    """
+    List and search Subscribers. Staff only.
+    """
+    if not request.user.is_staff:
+        messages.error(
+            request,
+            "Sorry, only staff members can do that."
+        )
+        return redirect("home")
+
+    subscribers = Subscriber.objects.all().order_by('-subscribed_at')
+
+    query = request.GET.get('q', '').strip()
+    if query:
+        subscriber_filter = Q(email__icontains=query)
+        if query.isdigit():
+            subscriber_filter |= Q(id=int(query))
+        subscribers = subscribers.filter(subscriber_filter)
+
+    paginator = Paginator(subscribers, 10)
+    page_number = request.GET.get('page')
+    subscribers_page = paginator.get_page(page_number)
+
+    context = {
+        'subscribers': subscribers_page,
+        'query': query,
+    }
+    return render(request, 'marketing/subscriber_list.html', context)
+
+
+@login_required
+def add_subscriber(request):
+    """
+    Create a Subscriber. Staff only.
+    """
+    if not request.user.is_staff:
+        messages.error(
+            request,
+            "Sorry, only staff members can do that."
+        )
+        return redirect("home")
+
+    if request.method == 'POST':
+        form = SubscriberAdminForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+
+            messages.success(
+                request,
+                "Subscriber created successfully."
+            )
+
+            return redirect("subscriber_list")
+    else:
+        form = SubscriberAdminForm()
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'marketing/add_subscriber.html', context)
+
+
+@login_required
+def edit_subscriber(request, subscriber_id):
+    """
+    Edit a Subscriber. Staff only. Email cannot be changed.
+    """
+    if not request.user.is_staff:
+        messages.error(
+            request,
+            "Sorry, only staff members can do that."
+        )
+        return redirect("home")
+
+    subscriber = get_object_or_404(Subscriber, pk=subscriber_id)
+
+    if request.method == 'POST':
+        form = SubscriberEditForm(request.POST, instance=subscriber)
+
+        if form.is_valid():
+            form.save()
+
+            messages.success(
+                request,
+                "Subscriber updated successfully."
+            )
+
+            return redirect("subscriber_list")
+    else:
+        form = SubscriberEditForm(instance=subscriber)
+
+    context = {
+        'form': form,
+        'subscriber': subscriber,
+    }
+    return render(request, 'marketing/edit_subscriber.html', context)
+
+
+@login_required
+def delete_subscriber(request, subscriber_id):
+    """
+    Delete a Subscriber. Staff only.
+    """
+    if not request.user.is_staff:
+        messages.error(
+            request,
+            "Sorry, only staff members can do that."
+        )
+        return redirect("home")
+
+    subscriber = get_object_or_404(Subscriber, pk=subscriber_id)
+    subscriber.delete()
+
+    messages.success(
+        request,
+        "Subscriber deleted successfully."
+    )
+
+    return redirect("subscriber_list")

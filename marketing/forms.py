@@ -49,3 +49,23 @@ class CampaignForm(forms.ModelForm):
             "text_body",
             "status"
         ]
+
+
+class SubscriberAdminForm(forms.ModelForm):
+    """
+    For staff to manage a Subscriber record directly.
+    """
+
+    class Meta:
+        model = Subscriber
+        fields = ["email", "status"]
+
+
+class SubscriberEditForm(SubscriberAdminForm):
+    """
+    Same as SubscriberAdminForm but email cannot be changed once created.
+    """
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["email"].disabled = True
