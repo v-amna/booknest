@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block extra_title %}Add Subscriber{% endblock %}
+
+{% block content %}
+
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="card shadow-sm">
+                <div class="card-header bg-black">
+                    <p class="h2 mb-0">Add Subscriber</p>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{ form | crispy }}
+                        <button type="submit" class="btn btn-success"> Add
+                            Subscriber
+                        </button>
+                        <a href="{% url 'subscriber_list' %}" class="btn btn-secondary">
+                            Cancel </a>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}

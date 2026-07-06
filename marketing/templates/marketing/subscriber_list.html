@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+{% block extra_title %}Subscribers{% endblock %}
+
+{% block content %}
+
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card shadow-sm">
+
+                    <div class="card-header bg-black d-flex justify-content-between align-items-center">
+                        <p class="h2 mb-0">Subscribers</p>
+                        <a href="{% url 'add_subscriber' %}" class="btn btn-success">
+                            Add Subscriber
+                        </a>
+                    </div>
+
+                    <div class="card-body">
+
+                        <form method="GET" class="row g-3 mb-4">
+                            <div class="col-md-8">
+                                <input
+                                    type="text"
+                                    name="q"
+                                    class="form-control"
+                                    placeholder="Search by ID or email"
+                                    value="{{ query }}">
+                            </div>
+                            <div class="col-md-4 d-flex gap-2">
+                                <button type="submit" class="btn btn-primary flex-grow-1">
+                                    Search
+                                </button>
+                                <a href="{% url 'subscriber_list' %}" class="btn btn-secondary">
+                                    Clear
+                                </a>
+                            </div>
+                        </form>
+
+                        {% if subscribers %}
+                            <div class="table-responsive">
+                                <table class="table align-middle mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Email</th>
+                                            <th>Status</th>
+                                            <th>Subscribed</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for subscriber in subscribers %}
+                                            <tr>
+                                                <td>
+                                                    <a href="{% url 'edit_subscriber' subscriber.id %}">
+                                                        {{ subscriber.id }}
+                                                    </a>
+                                                </td>
+                                                <td>{{ subscriber.email }}</td>
+                                                <td>
+                                                    <span class="badge fs-6
+                                                        {% if subscriber.status == 'active' %}bg-success
+                                                        {% elif subscriber.status == 'unsubscribed' %}bg-secondary
+                                                        {% elif subscriber.status == 'bounced' %}bg-danger
+                                                        {% elif subscriber.status == 'complained' %}bg-danger
+                                                        {% else %}bg-secondary{% endif %}">
+                                                        {{ subscriber.get_status_display }}
+                                                    </span>
+                                                </td>
+                                                <td>{{ subscriber.subscribed_at|date:"d M Y" }}</td>
+                                                <td class="text-end">
+                                                    <a href="{% url 'delete_subscriber' subscriber.id %}"
+                                                       class="btn btn-danger btn-sm"
+                                                       onclick="return confirm('Delete subscriber \'{{ subscriber.email }}\'? This cannot be undone.');">
+                                                        Delete
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            {% if subscribers.has_other_pages %}
+                                <nav class="mt-4">
+                                    <ul class="pagination justify-content-center mb-0">
+
+                                        {% if subscribers.has_previous %}
+                                            <li class="page-item">
+                                                <a class="page-link" href="?page={{ subscribers.previous_page_number }}{% if query %}&q={{ query }}{% endif %}">
+                                                    Previous
+                                                </a>
+                                            </li>
+                                        {% else %}
+                                            <li class="page-item disabled">
+                                                <span class="page-link">Previous</span>
+                                            </li>
+                                        {% endif %}
+
+                                        {% for page_num in subscribers.paginator.page_range %}
+                                            <li class="page-item {% if page_num == subscribers.number %}active{% endif %}">
+                                                <a class="page-link" href="?page={{ page_num }}{% if query %}&q={{ query }}{% endif %}">
+                                                    {{ page_num }}
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+
+                                        {% if subscribers.has_next %}
+                                            <li class="page-item">
+                                                <a class="page-link" href="?page={{ subscribers.next_page_number }}{% if query %}&q={{ query }}{% endif %}">
+                                                    Next
+                                                </a>
+                                            </li>
+                                        {% else %}
+                                            <li class="page-item disabled">
+                                                <span class="page-link">Next</span>
+                                            </li>
+                                        {% endif %}
+
+                                    </ul>
+                                </nav>
+                            {% endif %}
+
+                        {% else %}
+                            <p class="mb-0">No subscribers found.</p>
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
