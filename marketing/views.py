@@ -1,8 +1,11 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.mail import send_mail
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
+from django.template.loader import render_to_string
+from django.urls import reverse
 from books.models import Category
 
 from .forms import (
@@ -13,6 +16,27 @@ from .forms import (
     UnsubscriberForm,
 )
 from .models import Campaign, Subscriber
+
+
+def send_subscription_confirmation_email(request, subscriber):
+    """
+    Send a confirmation email with an unsubscribe link to a new subscriber.
+    """
+    unsubscribe_url = request.build_absolute_uri(
+        reverse('newsletter_unsubscribe')
+    ) + f"?email={subscriber.email}"
+
+    message = render_to_string(
+        'marketing/emails/subscription_confirmation.txt',
+        {'unsubscribe_url': unsubscribe_url},
+    )
+
+    send_mail(
+        subject="Welcome to the BookNest Newsletter",
+        message=message,
+        from_email=None,
+        recipient_list=[subscriber.email],
+    )
 
 
 def newsletters_subscribe(request):
@@ -40,6 +64,7 @@ def newsletters_subscribe(request):
                     "You already subscribed!"
                 )
             elif instance is None:
+                send_subscription_confirmation_email(request, subscriber)
                 messages.success(
                     request,
                     "You've been subscribed to our newsletter."
@@ -91,6 +116,8 @@ def newsletters_unsubscribe(request):
         initial = {}
         if request.user.is_authenticated:
             initial['email'] = request.user.email
+        elif request.GET.get('email'):
+            initial['email'] = request.GET.get('email')
 
         form = UnsubscriberForm(initial=initial)
 
@@ -276,7 +303,8 @@ def add_subscriber(request):
         form = SubscriberAdminForm(request.POST)
 
         if form.is_valid():
-            form.save()
+            subscriber = form.save()
+            send_subscription_confirmation_email(request, subscriber)
 
             messages.success(
                 request,
