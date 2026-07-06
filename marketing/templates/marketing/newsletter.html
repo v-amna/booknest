@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_filters %}
+
+{% block extra_title %}Home{% endblock %}
+
+{% block content %}
+    <!-- Categories -->
+    <section class="categories-section">
+
+        <h2 class="text-center mb-4">
+            Browse Categories
+        </h2>
+        <div class="category-list">
+            {% for category in categories %}
+                <a class="btn  btn-primary"
+                   href="{% url 'books' %}?category={{ category.name }}">
+                    {{ category.name }}
+                </a>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="content">
+        <div class="container">
+            <div class="row">
+                    <div class="d-none d-md-block col-md-5">
+                        <img src="{% static 'images/book-stacks.jpg' %}" alt="Book Stack" class="img-fluid rounded">
+                    </div>
+                {% if is_subscribe %}
+                    <!-- Newsletter Subscription -->
+                    <div class="col-sm-12 col-md-6">
+                        <p class="h5">Subscribe to newsletter</p>
+                        <p>Stay updated with our latest book releases and
+                            special
+                            offers.</p>
+                        <form method="post"
+                              action="{% url 'newsletter_subscribe' %}">
+                            {% csrf_token %}
+                            {{ form | crispy }}
+                            <p class="fs-6">By subscribing you are agreeing to the privacy policies</p>
+                            <button type="submit" class="btn btn-primary mt-2">Subscribe</button>
+                        </form>
+                    </div>
+                {% elif is_unsubscribe %}
+                    <!-- Newsletter Unsubscription -->
+                    <div class="col-sm-12 col-md-6">
+                        <p class="h5">Unsubscribe from newsletter</p>
+                        <p>Sad to see you go...</p>
+                        <form method="post"
+                              action="{% url 'newsletter_unsubscribe' %}">
+                            {% csrf_token %}
+                            {{ form | crispy }}
+                            <button type="submit" class="btn btn-danger mt-2">Unsubscribe</button>
+                        </form>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

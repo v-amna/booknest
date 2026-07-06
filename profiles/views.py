@@ -3,6 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import render
 
+from marketing.models import Subscriber
+
 from .forms import UserProfileForm
 from .models import UserProfile
 
@@ -48,9 +50,15 @@ def profile(request):
             instance=profile
         )
 
+    is_subscribed = Subscriber.objects.filter(
+        email__iexact=request.user.email,
+        status=Subscriber.Status.ACTIVE,
+    ).exists()
+
     context = {
         'form': form,
         'orders': profile.order_set.all(),
+        'is_subscribed': is_subscribed,
     }
 
     return render(

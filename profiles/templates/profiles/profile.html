@@ -9,15 +9,18 @@
             <div class="col-lg-8">
                 <div class="card shadow-sm">
 
-                    <div class="card-header bg-black"> <h2 class="mb-0">My Profile</h2> </div>
+                    <div class="card-header bg-black"><h2 class="mb-0">My
+                        Profile</h2></div>
 
                     <div class="card-body">
-                        <p class="text-muted mb-4">Manage your delivery address.</p>
+                        <p class="text-muted mb-4">Manage your delivery
+                            address.</p>
                         <form method="POST" novalidate>
                             {% csrf_token %}
 
                             <div class="mb-3">
-                                <label for="{{ form.default_phone_number.id_for_label }}" class="form-label">
+                                <label for="{{ form.default_phone_number.id_for_label }}"
+                                       class="form-label">
                                     {{ form.default_phone_number.label }}
                                 </label>
                                 {{ form.default_phone_number }}
@@ -29,7 +32,8 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="{{ form.default_street_address1.id_for_label }}" class="form-label">
+                                <label for="{{ form.default_street_address1.id_for_label }}"
+                                       class="form-label">
                                     {{ form.default_street_address1.label }}
                                 </label>
                                 {{ form.default_street_address1 }}
@@ -41,7 +45,8 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="{{ form.default_street_address2.id_for_label }}" class="form-label">
+                                <label for="{{ form.default_street_address2.id_for_label }}"
+                                       class="form-label">
                                     {{ form.default_street_address2.label }}
                                 </label>
                                 {{ form.default_street_address2 }}
@@ -54,7 +59,8 @@
 
                             <div class="row mb-3">
                                 <div class="col-md-6">
-                                    <label for="{{ form.default_town_or_city.id_for_label }}" class="form-label">
+                                    <label for="{{ form.default_town_or_city.id_for_label }}"
+                                           class="form-label">
                                         {{ form.default_town_or_city.label }}
                                     </label>
                                     {{ form.default_town_or_city }}
@@ -65,7 +71,8 @@
                                     {% endif %}
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="{{ form.default_postcode.id_for_label }}" class="form-label">
+                                    <label for="{{ form.default_postcode.id_for_label }}"
+                                           class="form-label">
                                         {{ form.default_postcode.label }}
                                     </label>
                                     {{ form.default_postcode }}
@@ -78,7 +85,8 @@
                             </div>
 
                             <div class="mb-4">
-                                <label for="{{ form.default_country.id_for_label }}" class="form-label">
+                                <label for="{{ form.default_country.id_for_label }}"
+                                       class="form-label">
                                     {{ form.default_country.label }}
                                 </label>
                                 {{ form.default_country }}
@@ -94,6 +102,14 @@
                             </button>
 
                         </form>
+
+                        {% if is_subscribed %}
+                            <hr/>
+                            <p class="mt-4 mb-0">
+                                Subscribed to our newsletter.
+                                <a href="{% url 'newsletter_unsubscribe' %}">Unsubscribe</a>
+                            </p>
+                        {% endif %}
 
                     </div>
                 </div>

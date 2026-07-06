@@ -45,20 +45,21 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.sites",
 
-    # Allauth
     'allauth',
     'allauth.account',
     'django_countries',
     'crispy_forms',
     'crispy_bootstrap5',
+    "storages",
+    "anymail",
 
+    # in house apps
     "home",
     "books",
     "profiles",
     "cart",
     "checkout",
-    "storages",
-    "anymail",
+    "marketing",
 ]
 
 MIDDLEWARE = [
