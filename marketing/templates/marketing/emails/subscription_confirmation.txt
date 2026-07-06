@@ -1,0 +1,9 @@
+Hi,
+
+Thanks for subscribing to the BookNest newsletter! You'll now receive
+updates on our latest releases and special offers.
+
+If you ever want to stop receiving these emails, you can unsubscribe here:
+{{ unsubscribe_url }}
+
+- The BookNest Team
