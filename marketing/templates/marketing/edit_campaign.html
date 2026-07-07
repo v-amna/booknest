@@ -19,6 +19,11 @@
                         </button>
                         <a href="{% url 'campaign_list' %}"
                            class="btn btn-secondary"> Cancel </a>
+                        <a href="{% url 'send_campaign' campaign.id %}"
+                           class="btn btn-primary"
+                           onclick="return confirm('Send campaign \'{{ campaign.title }}\' to all active subscribers?');">
+                            Send
+                        </a>
                         <a href="{% url 'delete_campaign' campaign.id %}"
                            class="btn btn-danger"
                            onclick="return confirm('Delete campaign \'{{ campaign.title }}\'? This cannot be undone.');">

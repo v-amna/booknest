@@ -97,6 +97,7 @@ class EmailEvent(models.Model):
     occurred_at = models.DateTimeField(auto_now_add=True)
     clicked_url = models.URLField(blank=True)
     user_agent = models.TextField(blank=True)
+    email_id = models.CharField(max_length=255, blank=True)
 
     class Meta:
         indexes = [

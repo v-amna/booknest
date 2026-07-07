@@ -72,6 +72,11 @@
                                                 </td>
                                                 <td>{{ campaign.created_at|date:"d M Y" }}</td>
                                                 <td class="text-end">
+                                                    <a href="{% url 'send_campaign' campaign.id %}"
+                                                       class="btn btn-primary btn-sm"
+                                                       onclick="return confirm('Send campaign \'{{ campaign.title }}\' to all active subscribers?');">
+                                                        Send
+                                                    </a>
                                                     <a href="{% url 'delete_campaign' campaign.id %}"
                                                        class="btn btn-danger btn-sm"
                                                        onclick="return confirm('Delete campaign \'{{ campaign.title }}\'? This cannot be undone.');">

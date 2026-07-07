@@ -1,11 +1,12 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.core.mail import send_mail
+from django.core.mail import EmailMessage, send_mail
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 from django.urls import reverse
+from django.utils import timezone
 from books.models import Category
 
 from .forms import (
@@ -15,7 +16,45 @@ from .forms import (
     SubscriberForm,
     UnsubscriberForm,
 )
-from .models import Campaign, Subscriber
+from .models import Campaign, EmailEvent, Subscriber
+
+
+def send_campaign_emails(campaign):
+    """
+    Send a Campaign to all active Subscribers, using html_body if set,
+    otherwise text_body. Records an EmailEvent per send.
+    """
+    is_html = bool(campaign.html_body)
+    body = campaign.html_body if is_html else campaign.text_body
+
+    subscribers = Subscriber.objects.filter(status=Subscriber.Status.ACTIVE)
+
+    sent_count = 0
+
+    for subscriber in subscribers:
+        email = EmailMessage(
+            subject=campaign.subject,
+            body=body,
+            to=[subscriber.email],
+        )
+        if is_html:
+            email.content_subtype = "html"
+
+        email.send()
+
+        anymail_status = getattr(email, 'anymail_status', None)
+        message_id = getattr(anymail_status, 'message_id', None) or ''
+
+        EmailEvent.objects.create(
+            campaign=campaign,
+            subscriber=subscriber,
+            event_type=EmailEvent.EventType.SENT,
+            email_id=message_id,
+        )
+
+        sent_count += 1
+
+    return sent_count
 
 
 def send_subscription_confirmation_email(request, subscriber):
@@ -230,6 +269,34 @@ def edit_campaign(request, campaign_id):
         'campaign': campaign,
     }
     return render(request, 'marketing/edit_campaign.html', context)
+
+
+@login_required
+def send_campaign(request, campaign_id):
+    """
+    Send a Campaign to all active Subscribers. Staff only.
+    """
+    if not request.user.is_staff:
+        messages.error(
+            request,
+            "Sorry, only staff members can do that."
+        )
+        return redirect("home")
+
+    campaign = get_object_or_404(Campaign, pk=campaign_id)
+
+    sent_count = send_campaign_emails(campaign)
+
+    campaign.status = Campaign.Status.SENT
+    campaign.sent_at = timezone.now()
+    campaign.save(update_fields=['status', 'sent_at'])
+
+    messages.success(
+        request,
+        f"Campaign sent to {sent_count} subscriber(s)."
+    )
+
+    return redirect("campaign_list")
 
 
 @login_required
