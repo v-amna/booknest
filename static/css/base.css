@@ -1,3 +1,10 @@
+/* Replicate alert-danger */
+.alert-error {
+    --bs-alert-color: var(--bs-danger-text-emphasis);
+    --bs-alert-bg: var(--bs-danger-bg-subtle);
+    --bs-alert-border-color: var(--bs-danger-border-subtle);
+    --bs-alert-link-color: var(--bs-danger-text-emphasis);
+}
 
 .navbar-brand {
     font-size: 1.5rem;
@@ -36,14 +43,6 @@
     padding: 1.25rem;
 }
 
-/* Buttons */
-.btn-primary {
-    border: none;
-}
-
-.btn-secondary {
-    margin-left: 5px;
-}
 
 .btn-outline-black {
     background: white;
@@ -174,10 +173,6 @@ form textarea {
     border-radius: 8px;
 }
 
-.btn-primary {
-    padding: 10px 24px;
-    border-radius: 8px;
-}
 /* Widget Styles */
 .btn-file {
     position: relative;

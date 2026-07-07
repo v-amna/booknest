@@ -11,7 +11,8 @@
 
                     <div class="card-header bg-black d-flex justify-content-between align-items-center">
                         <p class="h2 mb-0">Campaigns</p>
-                        <a href="{% url 'add_campaign' %}" class="btn btn-success">
+                        <a href="{% url 'add_campaign' %}"
+                           class="btn btn-success">
                             Add Campaign
                         </a>
                     </div>
@@ -19,21 +20,18 @@
                     <div class="card-body">
 
                         <form method="GET" class="row g-3 mb-4">
-                            <div class="col-md-8">
-                                <input
-                                    type="text"
-                                    name="q"
-                                    class="form-control"
-                                    placeholder="Search by ID or title"
-                                    value="{{ query }}">
+                            <div class="col-md-8 d-flex">
+                                <input type="search"
+                                        name="q"
+                                        class="form-control"
+                                        placeholder="Search by ID or title"
+                                        value="{{ query }}">
                             </div>
                             <div class="col-md-4 d-flex gap-2">
-                                <button type="submit" class="btn btn-primary flex-grow-1">
+                                <button type="submit"
+                                        class="btn btn-primary flex-grow-1">
                                     Search
                                 </button>
-                                <a href="{% url 'campaign_list' %}" class="btn btn-secondary">
-                                    Clear
-                                </a>
                             </div>
                         </form>
 
@@ -41,50 +39,51 @@
                             <div class="table-responsive">
                                 <table class="table align-middle mb-0">
                                     <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Title</th>
-                                            <th>Subject</th>
-                                            <th>Status</th>
-                                            <th>Created</th>
-                                            <th></th>
-                                        </tr>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Title</th>
+                                        <th>Subject</th>
+                                        <th>Status</th>
+                                        <th>Created on</th>
+                                        <th>Updated on</th>
+                                        <th></th>
+                                    </tr>
                                     </thead>
                                     <tbody>
-                                        {% for campaign in campaigns %}
-                                            <tr>
-                                                <td>
-                                                    <a href="{% url 'edit_campaign' campaign.id %}">
-                                                        {{ campaign.id }}
-                                                    </a>
-                                                </td>
-                                                <td>{{ campaign.title }}</td>
-                                                <td>{{ campaign.subject }}</td>
-                                                <td>
-                                                    <span class="badge fs-6
+                                    {% for campaign in campaigns %}
+                                        <tr>
+                                            <td>
+                                                <a href="{% url 'edit_campaign' campaign.id %}">
+                                                    {{ campaign.id }}
+                                                </a>
+                                            </td>
+                                            <td>{{ campaign.title }}</td>
+                                            <td>{{ campaign.subject }}</td>
+                                            <td>
+                                                    <span class="badge
                                                         {% if campaign.status == 'sent' %}bg-success
                                                         {% elif campaign.status == 'cancelled' %}bg-danger
-                                                        {% elif campaign.status == 'sending' %}bg-info
-                                                        {% elif campaign.status == 'scheduled' %}bg-warning text-dark
+                                                        {% elif campaign.status == 'ready' %}bg-info
                                                         {% else %}bg-secondary{% endif %}">
                                                         {{ campaign.get_status_display }}
                                                     </span>
-                                                </td>
-                                                <td>{{ campaign.created_at|date:"d M Y" }}</td>
-                                                <td class="text-end">
-                                                    <a href="{% url 'send_campaign' campaign.id %}"
-                                                       class="btn btn-primary btn-sm"
-                                                       onclick="return confirm('Send campaign \'{{ campaign.title }}\' to all active subscribers?');">
-                                                        Send
-                                                    </a>
-                                                    <a href="{% url 'delete_campaign' campaign.id %}"
-                                                       class="btn btn-danger btn-sm"
-                                                       onclick="return confirm('Delete campaign \'{{ campaign.title }}\'? This cannot be undone.');">
-                                                        Delete
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                        {% endfor %}
+                                            </td>
+                                            <td>{{ campaign.created_at|date:"d M Y" }}</td>
+                                            <td>{{ campaign.updated_at|date:"d M Y" }}</td>
+                                            <td>
+                                                <a href="{% url 'send_campaign' campaign.id %}"
+                                                   class="btn btn-primary btn-sm"
+                                                   onclick="return confirm('Send campaign \'{{ campaign.title }}\' to all active subscribers?');">
+                                                    Send
+                                                </a>
+                                                <a href="{% url 'delete_campaign' campaign.id %}"
+                                                   class="btn btn-danger btn-sm"
+                                                   onclick="return confirm('Delete campaign \'{{ campaign.title }}\'? This cannot be undone.');">
+                                                    Delete
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
@@ -95,7 +94,10 @@
 
                                         {% if campaigns.has_previous %}
                                             <li class="page-item">
-                                                <a class="page-link" href="?page={{ campaigns.previous_page_number }}{% if query %}&q={{ query }}{% endif %}">
+                                                <a class="page-link"
+                                                   href="?page=
+
+                                                           {{ campaigns.previous_page_number }}{% if query %}&q={{ query }}{% endif %}">
                                                     Previous
                                                 </a>
                                             </li>
@@ -107,7 +109,10 @@
 
                                         {% for page_num in campaigns.paginator.page_range %}
                                             <li class="page-item {% if page_num == campaigns.number %}active{% endif %}">
-                                                <a class="page-link" href="?page={{ page_num }}{% if query %}&q={{ query }}{% endif %}">
+                                                <a class="page-link"
+                                                   href="?page=
+
+                                                           {{ page_num }}{% if query %}&q={{ query }}{% endif %}">
                                                     {{ page_num }}
                                                 </a>
                                             </li>
@@ -115,7 +120,10 @@
 
                                         {% if campaigns.has_next %}
                                             <li class="page-item">
-                                                <a class="page-link" href="?page={{ campaigns.next_page_number }}{% if query %}&q={{ query }}{% endif %}">
+                                                <a class="page-link"
+                                                   href="?page=
+
+                                                           {{ campaigns.next_page_number }}{% if query %}&q={{ query }}{% endif %}">
                                                     Next
                                                 </a>
                                             </li>
