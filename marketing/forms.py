@@ -50,6 +50,30 @@ class CampaignForm(forms.ModelForm):
             "status"
         ]
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["html_body"].required = False
+        self.fields["text_body"].required = False
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        has_html = bool(cleaned_data.get("html_body"))
+        has_text = bool(cleaned_data.get("text_body"))
+
+        if not has_html and not has_text:
+            raise forms.ValidationError(
+                "Provide either an HTML body or a text body for the campaign."
+            )
+
+        if has_html and has_text:
+            raise forms.ValidationError(
+                "Provide either an HTML body or a text body for the "
+                "campaign, not both."
+            )
+
+        return cleaned_data
+
 
 class SubscriberAdminForm(forms.ModelForm):
     """
