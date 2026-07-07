@@ -1,11 +1,11 @@
 <footer class="bg-dark text-white mt-5 py-4">
-    <div class="container text-center">
+    <div class="container d-flex flex-column align-items-center">
         <h5>BookNest</h5>
         <p> Discover your next great read. </p>
-        <div class="mb-3">
-            <a href="{% url 'home' %}" class="text-white me-3"> Home </a>
-            <a href="#" class="text-white me-3"> Books </a>
-            <a href="#" class="text-white"> Contact </a>
+        <div class="d-flex gap-4">
+            <a href="{% url 'home' %}" class="nav-link text-white"> Home </a>
+            <a href="{% url 'books' %}" class="nav-link text-white"> Books </a>
+            <a href="#" class="nav-link text-white"> Contact </a>
         </div>
         <small> &copy; {% now "Y" %} BookNest. All Rights Reserved. </small>
     </div>
