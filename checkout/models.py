@@ -1,5 +1,4 @@
 from django.db import models
-from django.contrib.auth.models import User
 from profiles.models import UserProfile
 from books.models import Book
 from django.db.models import Sum
@@ -9,7 +8,8 @@ from django_countries.fields import CountryField
 class Order(models.Model):
     class PaymentStatus(models.TextChoices):
         """ Enum-like class for payment statuses.
-            based on Ref: https://docs.stripe.com/payments/payment-intents/verifying-status#payment-status-mapping
+            based on Ref: https://docs.stripe.com
+            /payments/payment-intents/verifying-status#payment-status-mapping
         """
         pending = "PD", "Pending"
         succeeded = "IS", "Succeeded"

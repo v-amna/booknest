@@ -6,7 +6,7 @@ from books.models import Book
 from django.contrib.auth.models import User
 
 
-class StripeWH_Handler:
+class StripeWHHandler:
     """Handle Stripe webhooks"""
 
     def __init__(self, request):
@@ -114,7 +114,6 @@ class StripeWH_Handler:
             content=f'Webhook received: {event["type"]} | Order created',
             status=200
         )
-
 
     def handle_payment_intent_payment_failed(self, event):
         """

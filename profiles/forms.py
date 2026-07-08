@@ -3,7 +3,6 @@ from .models import UserProfile
 
 
 class UserProfileForm(forms.ModelForm):
-
     class Meta:
         model = UserProfile
 
@@ -23,6 +22,7 @@ class UserProfileForm(forms.ModelForm):
             'default_postcode': 'Postcode',
             'default_country': 'Country',
         }
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 

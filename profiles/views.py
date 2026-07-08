@@ -24,6 +24,7 @@ def profile_orders(request):
         {'orders': orders_page},
     )
 
+
 @login_required
 def profile(request):
     profile, created = UserProfile.objects.get_or_create(

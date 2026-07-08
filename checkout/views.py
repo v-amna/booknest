@@ -1,11 +1,7 @@
 import json
-from urllib import request
-import cart
 from profiles.models import UserProfile
 from django.shortcuts import render, redirect, get_object_or_404
 
-from profiles.views import profile
-from .models import Order
 from django.contrib import messages
 from books.models import Book
 from django.conf import settings
