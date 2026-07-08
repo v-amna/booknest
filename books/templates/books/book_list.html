@@ -35,14 +35,14 @@
                 <div class="col-md-3">
                     <select
                             name="category"
-                            class="form-select">
+                            class="form-select" aria-label="Select Category">
 
-                        <option value="">
+                        <option value="" aria-label="All Categories">
                             All Categories
                         </option>
 
                         {% for category in categories %}
-                            <option value="{{ category.name }}">
+                            <option value="{{ category.name }}" aria-label="{{ category.name }}">
                                 {{ category.name }}
                             </option>
                         {% endfor %}
