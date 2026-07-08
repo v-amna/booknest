@@ -1,3 +1,5 @@
+"""View for Marketing App."""
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.mail import EmailMessage, send_mail
@@ -21,7 +23,8 @@ from .models import Campaign, EmailEvent, Subscriber
 
 def send_campaign_emails(campaign):
     """
-    Send a Campaign to all active Subscribers, using html_body if set,
+    Send a Campaign to all active Subscribers, using html_body if set.
+
     otherwise text_body. Records an EmailEvent per send.
     """
     is_html = bool(campaign.html_body)
@@ -60,6 +63,8 @@ def send_campaign_emails(campaign):
 def send_subscription_confirmation_email(request, subscriber):
     """
     Send a confirmation email with an unsubscribe link to a new subscriber.
+
+    So user's typo in email can be fixed.
     """
     unsubscribe_url = request.build_absolute_uri(
         reverse('newsletter_unsubscribe')
@@ -81,6 +86,7 @@ def send_subscription_confirmation_email(request, subscriber):
 def newsletters_subscribe(request):
     """
     View for subscribing to newsletters if the user is not already subscribed.
+
     If the user is already subscribed, it will show a message indicating that
     they are already subscribed.
     """
@@ -125,9 +131,7 @@ def newsletters_subscribe(request):
 
 
 def newsletters_unsubscribe(request):
-    """
-    View for unsubscribing from newsletters.
-    """
+    """View for unsubscribing from newsletters."""
     if request.method == 'POST':
         email = request.POST.get('email', '').strip()
         instance = Subscriber.objects.filter(email__iexact=email).first()
@@ -170,9 +174,7 @@ def newsletters_unsubscribe(request):
 
 @login_required
 def campaign_list(request):
-    """
-    List and search Campaigns. Staff only.
-    """
+    """List and search Campaigns. Staff only."""
     if not request.user.is_staff:
         messages.error(
             request,
@@ -202,9 +204,7 @@ def campaign_list(request):
 
 @login_required
 def add_campaign(request):
-    """
-    Create a Campaign. Staff only.
-    """
+    """Create a Campaign. Staff only."""
     if not request.user.is_staff:
         messages.error(
             request,
@@ -237,9 +237,7 @@ def add_campaign(request):
 
 @login_required
 def edit_campaign(request, campaign_id):
-    """
-    Edit a Campaign. Staff only.
-    """
+    """Edit a Campaign. Staff only."""
     if not request.user.is_staff:
         messages.error(
             request,
@@ -273,9 +271,7 @@ def edit_campaign(request, campaign_id):
 
 @login_required
 def send_campaign(request, campaign_id):
-    """
-    Send a Campaign to all active Subscribers. Staff only.
-    """
+    """Send a Campaign to all active Subscribers. Staff only."""
     if not request.user.is_staff:
         messages.error(
             request,
@@ -308,9 +304,7 @@ def send_campaign(request, campaign_id):
 
 @login_required
 def delete_campaign(request, campaign_id):
-    """
-    Delete a Campaign. Staff only.
-    """
+    """Delete a Campaign. Staff only."""
     if not request.user.is_staff:
         messages.error(
             request,
@@ -331,9 +325,7 @@ def delete_campaign(request, campaign_id):
 
 @login_required
 def subscriber_list(request):
-    """
-    List and search Subscribers. Staff only.
-    """
+    """List and search Subscribers. Staff only."""
     if not request.user.is_staff:
         messages.error(
             request,
@@ -363,9 +355,7 @@ def subscriber_list(request):
 
 @login_required
 def add_subscriber(request):
-    """
-    Create a Subscriber. Staff only.
-    """
+    """Create a Subscriber. Staff only."""
     if not request.user.is_staff:
         messages.error(
             request,
@@ -397,9 +387,7 @@ def add_subscriber(request):
 
 @login_required
 def edit_subscriber(request, subscriber_id):
-    """
-    Edit a Subscriber. Staff only. Email cannot be changed.
-    """
+    """Edit a Subscriber. Staff only. Email cannot be changed."""
     if not request.user.is_staff:
         messages.error(
             request,
@@ -433,9 +421,7 @@ def edit_subscriber(request, subscriber_id):
 
 @login_required
 def delete_subscriber(request, subscriber_id):
-    """
-    Delete a Subscriber. Staff only.
-    """
+    """Delete a Subscriber. Staff only."""
     if not request.user.is_staff:
         messages.error(
             request,

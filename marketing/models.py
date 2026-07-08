@@ -1,3 +1,5 @@
+"""Models for marketing app."""
+
 import uuid
 from django.db import models
 from django.contrib.auth.models import User
@@ -5,7 +7,11 @@ from django.utils import timezone
 
 
 class Subscriber(models.Model):
+    """Newsletter subscriber model."""
+
     class Status(models.TextChoices):
+        """Subscriber status choices."""
+
         ACTIVE = "active", "Active"
         UNSUBSCRIBED = "unsubscribed", "Unsubscribed"
         BOUNCED = "bounced", "Bounced"
@@ -35,15 +41,19 @@ class Subscriber(models.Model):
     subscribed_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
+        """Subscriber model metadata."""
+
         indexes = [
             models.Index(fields=["status"]),
             models.Index(fields=["email"]),
         ]
 
     def __str__(self):
+        """Return email as string representation."""
         return self.email
 
     def unsubscribe(self, reason=""):
+        """Mark subscriber as unsubscribed with optional reason."""
         self.status = self.Status.UNSUBSCRIBED
         self.unsubscribed_at = timezone.now()
         self.unsubscribe_reason = reason
@@ -52,7 +62,11 @@ class Subscriber(models.Model):
 
 
 class Campaign(models.Model):
+    """Email marketing campaign model."""
+
     class Status(models.TextChoices):
+        """Campaign status choices."""
+
         DRAFT = "draft", "Draft"
         READY = "ready", "Ready"
         SENT = "sent", "Sent"
@@ -74,11 +88,16 @@ class Campaign(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
+        """Return title and status as string representation."""
         return f"{self.title} [{self.status}]"
 
 
 class EmailEvent(models.Model):
+    """Email event tracking model."""
+
     class EventType(models.TextChoices):
+        """Email event type choices."""
+
         SENT = "sent", "Sent"
         OPENED = "opened", "Opened"
         CLICKED = "clicked", "Clicked"
@@ -98,11 +117,14 @@ class EmailEvent(models.Model):
     email_id = models.CharField(max_length=255, blank=True)
 
     class Meta:
+        """EmailEvent model metadata."""
+
         indexes = [
             models.Index(fields=["campaign", "event_type"]),
             models.Index(fields=["subscriber", "event_type"]),
         ]
 
     def __str__(self):
+        """Return email event as string representation."""
         return (f"{self.subscriber.email}" +
                 f"→ {self.event_type} ({self.campaign.title})")
