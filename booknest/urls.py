@@ -23,6 +23,7 @@ from django.conf.urls.static import static
 
 
 def sitemap_view(request):
+    """View to return static sitemap.xml file."""
     return FileResponse(
         open(settings.BASE_DIR / 'static' / 'sitemap.xml', 'rb'),
         content_type='application/xml',
