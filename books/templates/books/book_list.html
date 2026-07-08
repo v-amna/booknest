@@ -1,7 +1,17 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block extra_title %}Books{% endblock %}
+{% block extra_title %}Books listing{% endblock %}
+
+{% block extra_meta %}
+    <meta name="description"
+          content="BookNest - Discover, purchase and review your favourite books online. Listing">
+    <meta name="keywords"
+          content="books list, online bookstore, novels, fiction, reading">
+    <meta name="author" content="BookNest">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="{{ request.build_absolute_uri }}">
+{% endblock %}
 
 {% block content %}
 

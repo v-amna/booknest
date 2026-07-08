@@ -2,6 +2,19 @@
 
 {% block extra_title %}{{ book.title }}{% endblock %}
 
+{% block extra_meta %}
+    <meta name="description"
+          content="{{ book.description }}">
+    <meta name="keywords"
+          content="{{ book.meta_keywords }}">
+    <meta name="author" content="BookNest, {{ book.author }}">
+    <meta name="robots" content="index, follow">
+    {% if book.book_url %}
+    <link rel="canonical" href="{{ book.book_url }}">
+    {% else %}
+    <link rel="canonical" href="{{ request.build_absolute_uri }}">
+    {% endif %}
+{% endblock %}
 {% block content %}
 
     <div class="container-fluid">

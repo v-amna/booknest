@@ -1,6 +1,15 @@
 {% extends "base.html" %}
 
 {% block extra_title %}Home{% endblock %}
+{% block extra_meta %}
+    <meta name="description"
+          content="BookNest - Discover, purchase and review your favourite books online.">
+    <meta name="keywords"
+          content="books, online bookstore, novels, fiction, reading">
+    <meta name="author" content="BookNest">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="{{ request.build_absolute_uri }}">
+{% endblock %}
 
 {% block content %}
 
@@ -25,7 +34,8 @@
         </h2>
         <div class="category-list">
             {% for category in categories %}
-                <a class="btn  btn-primary" href="{% url 'books' %}?category={{ category.name }}">
+                <a class="btn  btn-primary"
+                   href="{% url 'books' %}?category={{ category.name }}">
                     {{ category.name }}
                 </a>
             {% endfor %}
@@ -64,7 +74,8 @@
                                 <dt class="col-4 fs-6">Author</dt>
                                 <dd class="col-8 fs-6">{{ book.author }}</dd>
                                 <dt class="col-4">Price</dt>
-                                <dd class="col-8 fw-bold mb-0">€{{ book.price }}</dd>
+                                <dd class="col-8 fw-bold mb-0">
+                                    €{{ book.price }}</dd>
                             </dl>
                         </div>
                     </div>

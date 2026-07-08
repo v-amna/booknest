@@ -2,7 +2,17 @@
 {% load static %}
 {% load crispy_forms_filters %}
 
-{% block extra_title %}Home{% endblock %}
+{% block extra_title %}Newsletter{% endblock %}
+
+{% block extra_meta %}
+    <meta name="description"
+          content="Subscribe to newsletter of BookNest - To discover latest books online.">
+    <meta name="keywords"
+          content="newsletter, books, online bookstore, novels, fiction, reading">
+    <meta name="author" content="BookNest">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="{{ request.build_absolute_uri }}">
+{% endblock %}
 
 {% block content %}
     <!-- Categories -->

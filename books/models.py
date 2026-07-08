@@ -38,6 +38,7 @@ class Book(models.Model):
     author = models.CharField(max_length=255)
     publisher = models.CharField(max_length=255)
     description = models.TextField(blank=True)
+    meta_keywords = models.TextField(blank=True)
 
     pages = models.PositiveIntegerField()
 
