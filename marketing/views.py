@@ -285,6 +285,13 @@ def send_campaign(request, campaign_id):
 
     campaign = get_object_or_404(Campaign, pk=campaign_id)
 
+    if not campaign.status == Campaign.Status.READY:
+        messages.error(
+            request,
+            f"Only {Campaign.Status.READY} campaigns can be sent."
+        )
+        return redirect("campaign_list")
+
     sent_count = send_campaign_emails(campaign)
 
     campaign.status = Campaign.Status.SENT

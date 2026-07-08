@@ -54,8 +54,7 @@ class Subscriber(models.Model):
 class Campaign(models.Model):
     class Status(models.TextChoices):
         DRAFT = "draft", "Draft"
-        SCHEDULED = "scheduled", "Scheduled"
-        SENDING = "sending", "Sending"
+        READY = "ready", "Ready"
         SENT = "sent", "Sent"
         CANCELLED = "cancelled", "Cancelled"
 
@@ -67,7 +66,6 @@ class Campaign(models.Model):
 
     status = models.CharField(max_length=20, choices=Status,
                               default=Status.DRAFT)
-    scheduled_at = models.DateTimeField(null=True, blank=True)
     sent_at = models.DateTimeField(null=True, blank=True)
 
     created_by = models.ForeignKey(User, null=True, on_delete=models.SET_NULL,
