@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/css" href="https://www.xml-sitemaps.com/css/sitemap.css"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:fo="http://www.w3.org/1999/XSL/Format"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
+
+
+<url>
+  <loc>https://booknest-1-5c0fa7f9a116.herokuapp.com/</loc>
+  <lastmod>2026-07-08T14:56:55+00:00</lastmod>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>https://booknest-1-5c0fa7f9a116.herokuapp.com/books/</loc>
+  <lastmod>2026-07-08T14:56:55+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://booknest-1-5c0fa7f9a116.herokuapp.com/marketing/newsletter</loc>
+  <lastmod>2026-07-08T14:56:55+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://booknest-1-5c0fa7f9a116.herokuapp.com/cart/</loc>
+  <lastmod>2026-07-08T14:56:55+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://booknest-1-5c0fa7f9a116.herokuapp.com/accounts/signup/</loc>
+  <lastmod>2026-07-08T14:56:55+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://booknest-1-5c0fa7f9a116.herokuapp.com/accounts/login/</loc>
+  <lastmod>2026-07-08T14:56:55+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://booknest-1-5c0fa7f9a116.herokuapp.com/books/?category=Novel</loc>
+  <lastmod>2026-07-08T14:56:55+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://booknest-1-5c0fa7f9a116.herokuapp.com/books/?category=Autobiography</loc>
+  <lastmod>2026-07-08T14:56:55+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://booknest-1-5c0fa7f9a116.herokuapp.com/books/?category=Buissness</loc>
+  <lastmod>2026-07-08T14:56:55+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://booknest-1-5c0fa7f9a116.herokuapp.com/books/?category=Romance</loc>
+  <lastmod>2026-07-08T14:56:55+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://booknest-1-5c0fa7f9a116.herokuapp.com/books/?category=Technology</loc>
+  <lastmod>2026-07-08T14:56:55+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://booknest-1-5c0fa7f9a116.herokuapp.com/books/?category=Fiction</loc>
+  <lastmod>2026-07-08T14:56:55+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://booknest-1-5c0fa7f9a116.herokuapp.com/books/7/</loc>
+  <lastmod>2026-07-08T14:56:55+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://booknest-1-5c0fa7f9a116.herokuapp.com/books/4/</loc>
+  <lastmod>2026-07-08T14:56:55+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://booknest-1-5c0fa7f9a116.herokuapp.com/books/5/</loc>
+  <lastmod>2026-07-08T14:56:55+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://booknest-1-5c0fa7f9a116.herokuapp.com/books/1/</loc>
+  <lastmod>2026-07-08T14:56:55+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://booknest-1-5c0fa7f9a116.herokuapp.com/books/3/</loc>
+  <lastmod>2026-07-08T14:56:55+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://booknest-1-5c0fa7f9a116.herokuapp.com/books/2/</loc>
+  <lastmod>2026-07-08T14:56:55+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://booknest-1-5c0fa7f9a116.herokuapp.com/books/9/</loc>
+  <lastmod>2026-07-08T14:56:55+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://booknest-1-5c0fa7f9a116.herokuapp.com/accounts/password/reset/</loc>
+  <lastmod>2026-07-08T14:56:55+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+
+</urlset>
