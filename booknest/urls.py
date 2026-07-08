@@ -16,12 +16,22 @@ Including another URLconf
 """
 
 from django.contrib import admin
+from django.http import FileResponse
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+
+def sitemap_view(request):
+    return FileResponse(
+        open(settings.BASE_DIR / 'static' / 'sitemap.xml', 'rb'),
+        content_type='application/xml',
+    )
+
+
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("sitemap.xml", sitemap_view, name="sitemap"),
     path("accounts/", include("allauth.urls")),
     path("", include("home.urls")),
     path("books/", include("books.urls")),
