@@ -9,6 +9,39 @@ from django.db.models import Q
 from books.models import Book, Category
 
 
+@login_required
+def manage_books(request):
+    """
+    List and search Books for staff management, with edit/delete actions.
+    """
+    if not request.user.is_staff:
+        messages.error(
+            request,
+            "Sorry, only staff members can do that."
+        )
+        return redirect("books")
+
+    books = Book.objects.all().order_by('-created_on')
+
+    query = request.GET.get('q', '').strip()
+    if query:
+        books = books.filter(
+            Q(title__icontains=query) |
+            Q(author__icontains=query) |
+            Q(isbn__icontains=query)
+        )
+
+    paginator = Paginator(books, 10)
+    page_number = request.GET.get('page')
+    books_page = paginator.get_page(page_number)
+
+    context = {
+        'books': books_page,
+        'query': query,
+    }
+    return render(request, 'books/manage_books.html', context)
+
+
 def book_list(request):
     books = Book.objects.all().order_by('title')
     categories = Category.objects.all()

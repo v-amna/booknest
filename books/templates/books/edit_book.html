@@ -39,7 +39,8 @@
                         <button class="btn btn-warning" type="submit"> Save
                             Changes
                         </button>
-                        <a href="{% url 'book_detail' book.id %}"
+                        <a href="
+                                {% if user.is_staff %}{% url 'manage_books' %}{% else %}{% url 'book_detail' book.id %}{% endif %}"
                            class="btn btn-secondary"> Cancel </a>
                     </form>
                 </div>

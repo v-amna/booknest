@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+
+{% block extra_title %}Manage Books{% endblock %}
+
+{% block content %}
+
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card shadow-sm">
+
+                    <div class="card-header bg-black d-flex justify-content-between align-items-center">
+                        <p class="h2 mb-0">Manage Books</p>
+                        <a href="{% url 'add_book' %}"
+                           class="btn btn-success">
+                            Add Book
+                        </a>
+                    </div>
+
+                    <div class="card-body">
+
+                        <form method="GET" class="row g-3 mb-4">
+                            <div class="col-md-8 d-flex">
+                                <input type="search"
+                                       name="q"
+                                       class="form-control"
+                                       placeholder="Search by title, author or ISBN"
+                                       value="{{ query }}">
+                            </div>
+                            <div class="col-md-4 d-flex gap-2">
+                                <button type="submit"
+                                        class="btn btn-primary flex-grow-1">
+                                    Search
+                                </button>
+                            </div>
+                        </form>
+
+                        {% if books %}
+                            <div class="table-responsive">
+                                <table class="table align-middle mb-0">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Title</th>
+                                        <th>Author</th>
+                                        <th>ISBN</th>
+                                        <th>Price</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for book in books %}
+                                        <tr>
+                                            <td>{{ book.id }}</td>
+                                            <td>
+                                                <a href="{% url 'edit_book' book.id %}">
+                                                    {{ book.title }}
+                                                </a>
+                                            </td>
+                                            <td>{{ book.author }}</td>
+                                            <td>{{ book.isbn }}</td>
+                                            <td>€{{ book.price }}</td>
+                                            <td class="text-end">
+                                                <a href="{% url 'edit_book' book.id %}"
+                                                   class="btn btn-warning btn-sm">
+                                                    Edit
+                                                </a>
+                                                <a href="{% url 'delete_book' book.id %}"
+                                                   class="btn btn-danger btn-sm"
+                                                   onclick="return confirm('Delete book \'{{ book.title }}\'? This cannot be undone.');">
+                                                    Delete
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            {% if books.has_other_pages %}
+                                <nav class="mt-4">
+                                    <ul class="pagination justify-content-center mb-0">
+
+                                        {% if books.has_previous %}
+                                            <li class="page-item">
+                                                <a class="page-link"
+                                                   href="?page=
+
+
+                                                           {{ books.previous_page_number }}{% if query %}&q={{ query }}{% endif %}">
+                                                    Previous
+                                                </a>
+                                            </li>
+                                        {% else %}
+                                            <li class="page-item disabled">
+                                                <span class="page-link">Previous</span>
+                                            </li>
+                                        {% endif %}
+
+                                        {% for page_num in books.paginator.page_range %}
+                                            <li class="page-item {% if page_num == books.number %}active{% endif %}">
+                                                <a class="page-link"
+                                                   href="?page=
+
+
+                                                           {{ page_num }}{% if query %}&q={{ query }}{% endif %}">
+                                                    {{ page_num }}
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+
+                                        {% if books.has_next %}
+                                            <li class="page-item">
+                                                <a class="page-link"
+                                                   href="?page=
+
+
+                                                           {{ books.next_page_number }}{% if query %}&q={{ query }}{% endif %}">
+                                                    Next
+                                                </a>
+                                            </li>
+                                        {% else %}
+                                            <li class="page-item disabled">
+                                                <span class="page-link">Next</span>
+                                            </li>
+                                        {% endif %}
+
+                                    </ul>
+                                </nav>
+                            {% endif %}
+
+                        {% else %}
+                            <p class="mb-0">No books found.</p>
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
