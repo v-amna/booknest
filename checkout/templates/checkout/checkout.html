@@ -2,6 +2,11 @@
 {% load static %}
 
 {% block extra_title %}Checkout{% endblock %}
+{% block corejs %}
+    <!-- stripe -->
+    <script src="https://js.stripe.com/v3/"></script>
+{% endblock %}
+
 
 {% block extra_css %}
     {{ block.super }}
