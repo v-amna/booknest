@@ -6,7 +6,7 @@
 
 {% block inner_content %}
     <div class="container py-5">
-        <h2 class="mb-4"> {% trans "Sign In" %} </h2>
+        <p class="h2 mb-4"> {% trans "Sign In" %} </p>
         <p class="mb-4">
             {% blocktrans %}If you have not created an account yet, then please
                 <a href="{{ signup_url }}">sign up</a>
@@ -16,7 +16,6 @@
             {% csrf_token %}
             {{ form | crispy }}
             {{ redirect_field }}
-            <a class="btn btn-outline-black rounded-0" href="{% url 'home' %}">Home</a>
             <button type="submit" class="btn btn-primary">
                 {% trans "Sign In" %}
             </button>
