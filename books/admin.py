@@ -1,3 +1,5 @@
+"""Book admin app config."""
+
 from django.contrib import admin
 
 from .models import Category, Book, Review

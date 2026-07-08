@@ -1,3 +1,4 @@
+"""URLs for books app."""
 from django.urls import path
 
 from .views import add_book, book_detail, book_list, edit_book, delete_book, \

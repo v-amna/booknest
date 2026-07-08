@@ -1,3 +1,4 @@
+"""Book App forms."""
 from .widgets import CustomClearableFileInput
 from django import forms
 from .models import Book, Review
@@ -5,6 +6,8 @@ import django.utils.timezone as timezone
 
 
 class BookForm(forms.ModelForm):
+    """Book model form, fixes publication_date field."""
+
     cover_image = forms.ImageField(
         label="Image",
         required=False,
@@ -12,6 +15,8 @@ class BookForm(forms.ModelForm):
     )
 
     class Meta:
+        """Metaclass to fix fields attributes."""
+
         model = Book
         fields = "__all__"
         widgets = {
@@ -23,6 +28,7 @@ class BookForm(forms.ModelForm):
         }
 
     def clean(self):
+        """Validate the book form."""
         cleaned_data = super().clean()
 
         price = cleaned_data.get("price")
@@ -46,7 +52,11 @@ class BookForm(forms.ModelForm):
 
 
 class ReviewForm(forms.ModelForm):
+    """Review model form, fixes rating field."""
+
     class Meta:
+        """Metaclass to fix fields attributes."""
+
         model = Review
 
         fields = [
@@ -54,6 +64,7 @@ class ReviewForm(forms.ModelForm):
             "comment",
         ]
 
+    # Limit rating to 1-5 stars
     widgets = {
         "rating": forms.NumberInput(
             attrs={

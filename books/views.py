@@ -1,3 +1,5 @@
+"""Book app views."""
+
 from django.contrib import messages
 from .forms import ReviewForm
 from .models import Review
@@ -11,9 +13,7 @@ from books.models import Book, Category
 
 @login_required
 def manage_books(request):
-    """
-    List and search Books for staff management, with edit/delete actions.
-    """
+    """List and search Books for staff management, with edit/delete actions."""
     if not request.user.is_staff:
         messages.error(
             request,
@@ -43,6 +43,7 @@ def manage_books(request):
 
 
 def book_list(request):
+    """Book listing page for all users."""
     books = Book.objects.all().order_by('title')
     categories = Category.objects.all()
     query = request.GET.get('q')
@@ -66,12 +67,14 @@ def book_list(request):
 
 
 def book_detail(request, book_id):
+    """Book details page."""
     book = get_object_or_404(Book, pk=book_id)
     return render(request, 'books/book_detail.html', {'book': book})
 
 
 @login_required
 def add_book(request):
+    """Add book page for staffs."""
     if not request.user.is_superuser:
         messages.error(
             request,
@@ -98,6 +101,7 @@ def add_book(request):
 
 @login_required
 def edit_book(request, book_id):
+    """Edit book page for staffs."""
     if not request.user.is_superuser:
         messages.error(
             request,
@@ -128,6 +132,7 @@ def edit_book(request, book_id):
 
 @login_required
 def delete_book(request, book_id):
+    """Delete book page for staffs."""
     if not request.user.is_superuser:
         messages.error(
             request,
@@ -144,6 +149,7 @@ def delete_book(request, book_id):
 
 @login_required
 def add_review(request, book_id):
+    """Add review page for logged in users."""
     book = get_object_or_404(Book, pk=book_id)
     if request.method == "POST":
 
@@ -169,6 +175,7 @@ def add_review(request, book_id):
 
 @login_required
 def edit_review(request, review_id):
+    """Edit review page for logged in users."""
     review = get_object_or_404(Review, pk=review_id)
     if review.user != request.user:
         messages.error(
@@ -199,6 +206,7 @@ def edit_review(request, review_id):
 
 @login_required
 def delete_review(request, review_id):
+    """Delete review page for staffs."""
     review = get_object_or_404(Review, pk=review_id)
     if review.user != request.user:
         messages.error(request, "You can only delete your own reviews.")

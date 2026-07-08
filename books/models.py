@@ -1,13 +1,11 @@
-from django.db import models
+"""Models for Books App."""
 
-# Create your models here.
+from django.db import models
 from django.contrib.auth.models import User
 
 
 class Category(models.Model):
-    """
-    Book categories
-    """
+    """Book categories model."""
 
     name = models.CharField(
         max_length=100,
@@ -15,16 +13,17 @@ class Category(models.Model):
     )
 
     class Meta:
+        """Meta class."""
+
         verbose_name_plural = "Categories"
 
     def __str__(self):
+        """Return the string representation of the model."""
         return self.name
 
 
 class Book(models.Model):
-    """
-    Book information
-    """
+    """Book details model."""
 
     category = models.ForeignKey(
         Category,
@@ -98,13 +97,12 @@ class Book(models.Model):
     )
 
     def __str__(self):
+        """Return the string representation of the model."""
         return self.title
 
 
 class Review(models.Model):
-    """
-    Customer reviews
-    """
+    """Customer reviews."""
 
     user = models.ForeignKey(
         User,
@@ -126,4 +124,5 @@ class Review(models.Model):
     )
 
     def __str__(self):
+        """Return the string representation of the model."""
         return f"{self.book.title} - {self.user.username}"
