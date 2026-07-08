@@ -1,3 +1,5 @@
+"""Home app views."""
+
 from django.http import HttpResponse
 from django.shortcuts import render
 from books.models import Book, Category
@@ -6,8 +8,8 @@ from django.template.loader import render_to_string
 from booknest import settings
 
 
-# Create your views here.
 def index(request):
+    """Home index view."""
     featured_books = Book.objects.all()[:3]
 
     context = {
@@ -18,6 +20,7 @@ def index(request):
 
 
 def robots_txt(request):
+    """robots.txt view."""
     domain = Site.objects.get_current().domain
     content = render_to_string("robots.txt", {
         "debug": settings.DEBUG,
