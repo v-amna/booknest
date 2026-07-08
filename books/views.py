@@ -82,32 +82,21 @@ def add_book(request):
 
     if request.method == "POST":
 
-        form = BookForm(
-            request.POST,
-            request.FILES
-        )
-
+        form = BookForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
 
-            messages.success(
-                request,
-                "Book added successfully."
-            )
-
+            messages.success(request, "Book added successfully.")
             return redirect("books")
 
     else:
-
         form = BookForm()
 
-    context = {
-        "form": form,
-    }
+    context = {"form": form, }
 
     return render(
         request,
-        "books/add_book.html",
+        "books/edit_book.html",
         context
     )
 
@@ -122,37 +111,17 @@ def edit_book(request, book_id):
 
         return redirect("books")
 
-    book = get_object_or_404(
-        Book,
-        pk=book_id
-    )
+    book = get_object_or_404(Book, pk=book_id)
 
     if request.method == "POST":
 
-        form = BookForm(
-            request.POST,
-            request.FILES,
-            instance=book
-        )
-
+        form = BookForm(request.POST, request.FILES, instance=book)
         if form.is_valid():
             form.save()
-
-            messages.success(
-                request,
-                "Book updated successfully."
-            )
-
-            return redirect(
-                "book_detail",
-                book.id
-            )
-
+            messages.success(request, "Book updated successfully.")
+            return redirect("book_detail", book.id)
     else:
-
-        form = BookForm(
-            instance=book
-        )
+        form = BookForm(instance=book)
 
     context = {
         "form": form,
@@ -173,22 +142,13 @@ def delete_book(request, book_id):
             request,
             "Sorry, only store administrators can do that."
         )
+        return redirect("manage_books")
 
-        return redirect("books")
-
-    book = get_object_or_404(
-        Book,
-        pk=book_id
-    )
+    book = get_object_or_404(Book, pk=book_id)
 
     book.delete()
-
-    messages.success(
-        request,
-        "Book deleted successfully."
-    )
-
-    return redirect("books")
+    messages.success(request, "Book deleted successfully.")
+    return redirect("manage_books")
 
 
 @login_required
