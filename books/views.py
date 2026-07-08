@@ -93,12 +93,7 @@ def add_book(request):
         form = BookForm()
 
     context = {"form": form, }
-
-    return render(
-        request,
-        "books/edit_book.html",
-        context
-    )
+    return render(request, "books/edit_book.html", context)
 
 
 @login_required
@@ -128,11 +123,7 @@ def edit_book(request, book_id):
         "book": book,
     }
 
-    return render(
-        request,
-        "books/edit_book.html",
-        context
-    )
+    return render(request, "books/edit_book.html", context)
 
 
 @login_required
@@ -153,35 +144,19 @@ def delete_book(request, book_id):
 
 @login_required
 def add_review(request, book_id):
-    book = get_object_or_404(
-        Book,
-        pk=book_id
-    )
-
+    book = get_object_or_404(Book, pk=book_id)
     if request.method == "POST":
 
         form = ReviewForm(request.POST)
-
         if form.is_valid():
             review = form.save(commit=False)
-
             review.user = request.user
             review.book = book
-
             review.save()
-
-            messages.success(
-                request,
-                "Review added successfully."
-            )
-
-            return redirect(
-                "book_detail",
-                book_id=book.id
-            )
+            messages.success(request, "Review added successfully.")
+            return redirect("book_detail", book_id=book.id)
 
     else:
-
         form = ReviewForm()
 
     context = {
@@ -189,95 +164,48 @@ def add_review(request, book_id):
         "form": form,
     }
 
-    return render(
-        request,
-        "books/add_review.html",
-        context
-    )
+    return render(request, "books/add_review.html", context)
 
 
 @login_required
 def edit_review(request, review_id):
-    review = get_object_or_404(
-        Review,
-        pk=review_id
-    )
-
+    review = get_object_or_404(Review, pk=review_id)
     if review.user != request.user:
         messages.error(
             request,
             "You can only edit your own reviews."
         )
 
-        return redirect(
-            "book_detail",
-            book_id=review.book.id
-        )
+        return redirect("book_detail", book_id=review.book.id)
 
     if request.method == "POST":
 
-        form = ReviewForm(
-            request.POST,
-            instance=review
-        )
+        form = ReviewForm(request.POST, instance=review)
 
         if form.is_valid():
             form.save()
-
-            messages.success(
-                request,
-                "Review updated successfully."
-            )
-
-            return redirect(
-                "book_detail",
-                book_id=review.book.id
-            )
-
+            messages.success(request, "Review updated successfully.")
+            return redirect("book_detail", book_id=review.book.id)
     else:
-
-        form = ReviewForm(
-            instance=review
-        )
+        form = ReviewForm(instance=review)
 
     context = {
         "form": form,
         "book": review.book,
     }
 
-    return render(
-        request,
-        "books/edit_review.html",
-        context
-    )
+    return render(request, "books/edit_review.html", context)
 
 
 @login_required
 def delete_review(request, review_id):
-    review = get_object_or_404(
-        Review,
-        pk=review_id
-    )
-
+    review = get_object_or_404(Review, pk=review_id)
     if review.user != request.user:
-        messages.error(
-            request,
-            "You can only delete your own reviews."
-        )
+        messages.error(request, "You can only delete your own reviews.")
 
-        return redirect(
-            "book_detail",
-            book_id=review.book.id
-        )
+        return redirect("book_detail", book_id=review.book.id)
 
     review.delete()
+    messages.success(request, "Review deleted successfully.")
 
-    messages.success(
-        request,
-        "Review deleted successfully."
-    )
-
-    return redirect(
-        "book_detail",
-        book_id=review.book.id
-    )
+    return redirect("book_detail", book_id=review.book.id)
