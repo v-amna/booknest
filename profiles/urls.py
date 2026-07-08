@@ -1,3 +1,5 @@
+"""URLs for UserProfile."""
+
 from django.urls import path
 
 from .views import profile, profile_orders

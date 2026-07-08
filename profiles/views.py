@@ -1,3 +1,5 @@
+"""View for UserProfiles."""
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
@@ -11,6 +13,7 @@ from .models import UserProfile
 
 @login_required
 def profile_orders(request):
+    """User profile orders pages."""
     profile = UserProfile.objects.get(user=request.user)
     orders = profile.order_set.all().order_by('-date')
 
@@ -27,6 +30,7 @@ def profile_orders(request):
 
 @login_required
 def profile(request):
+    """User profile page."""
     profile, created = UserProfile.objects.get_or_create(
         user=request.user
     )

@@ -1,9 +1,15 @@
+"""Forms for user profile model."""
+
 from django import forms
 from .models import UserProfile
 
 
 class UserProfileForm(forms.ModelForm):
+    """Form for user profile model."""
+
     class Meta:
+        """Metaclass for UserProfile model."""
+
         model = UserProfile
 
         fields = [
@@ -24,6 +30,7 @@ class UserProfileForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
+        """Initialize the form, fields and widgets with bootstrap class."""
         super().__init__(*args, **kwargs)
 
         for field in self.fields.values():

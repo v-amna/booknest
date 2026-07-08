@@ -1,9 +1,13 @@
+"""Models for the profile app."""
+
 from django.db import models
 from django.contrib.auth.models import User
 
 
 # Create your models here.
 class UserProfile(models.Model):
+    """User profile model."""
+
     user = models.OneToOneField(
         User,
         on_delete=models.CASCADE
@@ -40,4 +44,5 @@ class UserProfile(models.Model):
     )
 
     def __str__(self):
+        """Return the username of the associated user."""
         return self.user.username
