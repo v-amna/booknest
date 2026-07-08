@@ -1,3 +1,5 @@
+"""Views for Cart App."""
+
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib import messages
 from django.http import JsonResponse
@@ -6,6 +8,7 @@ from books.models import Book
 
 
 def view_cart(request):
+    """View for cart."""
     cart = request.session.get('cart', {})
 
     cart_items = []
@@ -48,6 +51,7 @@ def _add_to_cart(request, item_id):
 
 
 def add_to_cart_ajax(request, item_id):
+    """Ajax view for cart add action."""
     cart, book, request = _add_to_cart(request, item_id)
     return JsonResponse({
         'success': True,
@@ -57,6 +61,7 @@ def add_to_cart_ajax(request, item_id):
 
 
 def add_to_cart(request, item_id):
+    """Add item to cart view."""
     cart, book, request = _add_to_cart(request, item_id)
 
     messages.success(
@@ -68,6 +73,7 @@ def add_to_cart(request, item_id):
 
 
 def update_cart(request, item_id):
+    """Update item quantity in cart."""
     quantity = int(request.POST.get('quantity'))
 
     cart = request.session.get('cart', {})
@@ -86,6 +92,7 @@ def update_cart(request, item_id):
 
 
 def remove_from_cart(request, item_id):
+    """Remove item from cart."""
     cart = request.session.get('cart', {})
 
     item_id = str(item_id)
