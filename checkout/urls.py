@@ -1,3 +1,5 @@
+"""checkout URL Configuration."""
+
 from django.urls import path
 from . import views
 from .webhooks import webhook

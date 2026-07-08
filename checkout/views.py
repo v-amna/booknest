@@ -1,3 +1,5 @@
+"""Checkout app views."""
+
 import json
 from profiles.models import UserProfile
 from django.shortcuts import render, redirect, get_object_or_404
@@ -15,7 +17,6 @@ from django.views.decorators.http import require_POST
 @require_POST
 def cache_checkout_data(request):
     """Attach checkout metadata to the Stripe PaymentIntent."""
-
     try:
         pid = request.POST.get("client_secret").split("_secret")[0]
 
@@ -46,6 +47,7 @@ def cache_checkout_data(request):
 
 
 def checkout(request):
+    """Checkout view for both Get and Post view."""
     stripe_public_key = settings.STRIPE_PUBLIC_KEY
     stripe_secret_key = settings.STRIPE_SECRET_KEY
 
@@ -148,6 +150,7 @@ def checkout(request):
 
 
 def checkout_success(request, order_id):
+    """Checkout success view."""
     order = get_object_or_404(
         Order,
         pk=order_id

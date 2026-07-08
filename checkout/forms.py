@@ -1,9 +1,15 @@
+"""Forms for checkout app."""
+
 from django import forms
 from .models import Order
 
 
 class OrderForm(forms.ModelForm):
+    """Order form for checkout process."""
+
     class Meta:
+        """Meta class."""
+
         model = Order
 
         fields = [
@@ -23,6 +29,7 @@ class OrderForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
+        """Initialize the form with default bootstrap class."""
         super().__init__(*args, **kwargs)
 
         for field in self.fields.values():
