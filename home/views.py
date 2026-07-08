@@ -1,5 +1,9 @@
+from django.http import HttpResponse
 from django.shortcuts import render
 from books.models import Book, Category
+from django.contrib.sites.models import Site
+from django.template.loader import render_to_string
+from booknest import settings
 
 
 # Create your views here.
@@ -11,3 +15,12 @@ def index(request):
         'categories': Category.objects.all(),
     }
     return render(request, 'home/index.html', context)
+
+
+def robots_txt(request):
+    domain = Site.objects.get_current().domain
+    content = render_to_string("robots.txt", {
+        "debug": settings.DEBUG,
+        "domain": domain,
+    })
+    return HttpResponse(content, content_type="text/plain")

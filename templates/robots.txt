@@ -1,0 +1,10 @@
+{# templates/robots.txt #}
+User-agent: *
+{% if not debug %}
+Disallow: /admin/
+Disallow: /api/
+Allow: /
+Sitemap: https://{{ domain }}/sitemap.xml
+{% else %}
+Disallow: /
+{% endif %}
