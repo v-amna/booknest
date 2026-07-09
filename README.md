@@ -377,7 +377,7 @@ Detailed documentation for AWS S3 integration can be found in the [AWS Integrati
 
 ### Development Tools
 
-- Visual Studio Code *(or PyCharm if you used it)*
+- Visual Studio Code or PyCharm
 - Git
 - GitHub
 - Heroku
@@ -388,6 +388,12 @@ Detailed documentation for AWS S3 integration can be found in the [AWS Integrati
 
 ## Database
 The application uses PostgreSQL as the primary database in production, providing better performance, scalability, and reliability compared to SQLite.
+
+### ER Diagram
+
+The database structure is documented with the following entity relationship diagram.
+
+![booknest_db_er_diagram](screenshot/booknest%20-db-er-diagram.png)
 
 ### Development and Production
 • Development: SQLite (default Django database for simplicity)
@@ -504,6 +510,108 @@ python manage.py createsuperuser
 python manage.py runserver
 Visit: http://127.0.0.1:8000/
 
+## Deployment
+
+### Heroku App Setup
+
+- Create the Heroku app by following the official Heroku documentation:
+    https://devcenter.heroku.com/categories/python-support
+- Configure the application to use the included `Procfile`:
+    `web: gunicorn booknest.wsgi`
+- Enable automatic deployment from the connected Git branch so every branch push can trigger deployment when auto deploy is enabled in Heroku.
+- Heroku app setup and deployment references:
+    https://devcenter.heroku.com/articles/getting-started-with-python
+    https://devcenter.heroku.com/articles/github-integration
+
+### PostgreSQL Database Setup
+
+- Production uses PostgreSQL.
+- On Heroku, provision Heroku Postgres and attach it to the app.
+  For the project, codeinstitute database is used.
+- The application reads database connection details from environment variables, including `DATABASE_URL` when available.
+- PostgreSQL / Heroku Postgres references:
+    https://devcenter.heroku.com/articles/heroku-postgresql
+
+### AWS S3 Setup
+
+- Static and media file deployment should be configured with AWS S3.
+- Setup instructions for bucket creation, IAM, environment variables, and Django integration are documented in [docs/aws.md](docs/aws.md).
+
+### Resend Email Setup
+
+- Email delivery is configured through Resend.
+- Setup instructions for domain verification, API key configuration, and Heroku/local environment setup are documented in [docs/resend.md](docs/resend.md).
+
+### Stripe Setup
+
+- Stripe is used for payment processing.
+- Configure Stripe keys, webhooks, and payment flow using the official Stripe documentation.
+- Stripe environment variables used in this project are:
+  - `STRIPE_PUBLIC_KEY`
+  - `STRIPE_SECRET_KEY`
+  - `STRIPE_WH_SECRET`
+- These values are loaded from environment variables in `env.py` for local development and should be configured as app config vars in deployment environments.
+- Add these as environment variables in Heroku for production deployment.
+- Stripe developer references:
+    https://docs.stripe.com/
+    https://docs.stripe.com/payments
+    https://docs.stripe.com/webhooks
+
 ## Testing With Validators
+
+Form validations added to all forms
+Example
 ![sign_in](screenshot/Authentication/sign_in.png)
 ![sign_up](screenshot/Authentication/sign_up.png)
+
+## Automated Testing
+
+### Chrome DevTools Lighthouse validation
+
+- Chrome DevTools Lighthouse was used to validate frontend quality.
+- A Lighthouse test was run on the books page.
+- Reported results from the validation were:
+    - Performance: 94
+    - Accessibility: 100
+    - Best Practices: 100
+    - SEO: 100
+
+![lighthouse_books_page](screenshot/lighthouse-books-page.png)
+
+### Code-style and docstring validation
+
+- `flake8` is used for code-style and doc-string checking.
+- Running `flake8` should not return any errors.
+
+### Unit testing
+
+- `pytest` is used for unit testing.
+- Testing should use the local database configuration.
+- This project is configured with `pytest.ini` for Django settings and test discovery.
+
+Recommended to run test commands before committing code to ensure code quality and functionality.
+```bash
+flake8
+pytest
+```
+
+## Future Improvements
+
+- Email bounce and spam report management using Resend webhooks.
+- Book stock management should be implemented so orders cannot be placed for out-of-stock products.
+- Refund process support.
+- Email confirmation after successful payment.
+- Order delivery tracking.
+
+## References
+
+- Django documentation:
+    https://docs.djangoproject.com/
+- AWS documentation:
+    https://docs.aws.amazon.com/
+- Stripe documentation:
+    https://docs.stripe.com/
+- Resend documentation:
+    https://resend.com/docs
+- Code Institute Boutique Ado project repository:
+    https://github.com/Code-Institute-Solutions/boutique_ado_v1
