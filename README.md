@@ -218,6 +218,55 @@ The primary objective of BookNest is to provide an efficient ecommerce platform 
 - Maintain the catalogue using product management features.
 - Deliver a responsive shopping experience across all devices.
 
+### Admin User Flow - Manage Categories
+
+This flow shows how an admin can create a new book category from the Django admin interface.
+
+1. Login as admin.
+
+![admin_login](screenshot/Admin-login.png)
+
+2. Click on Categories.
+
+![admin_categories](screenshot/Admin-categories.png)
+
+3. Click on Add Categories.
+
+![admin_categories_add_button](screenshot/Admin-categories-list-add.png)
+
+4. Fill category name and press Save.
+
+![admin_categories_add_form](screenshot/Admin-categories-add.png)
+
+### Admin User Flow - Manage Books
+
+This flow shows how an admin can manage books from the site, including listing, searching, editing, adding, and cover-image preview behavior.
+
+1. Go to the site URL `https://booknest-1-5c0fa7f9a116.herokuapp.com/` and open the user menu to access book management.
+
+![book_management_entry](screenshot/Book-Management.png)
+
+2. On the Book Management page, admin can:
+    - add a book
+    - view the listing
+    - search by ISBN, title, and author
+    - edit or delete each book
+
+![book_management_page](screenshot/Book-Management-list.png)
+
+3. On the Edit Book page, all book fields are shown for updates.
+
+![book_edit_page](screenshot/Book-edit.png)
+
+4. Add Book uses the same form as Edit Book. Fields marked with `*` are required.
+    `meta_keywords` is used for SEO meta keywords.
+
+![book_add_same_as_edit](screenshot/Book-edit.png)
+
+5. When uploading or changing the cover image, a preview is shown before save.
+
+![book_cover_preview](screenshot/Book-edit-cover-preview.png)
+
 ## Tech Stack
 
 ### Backend
