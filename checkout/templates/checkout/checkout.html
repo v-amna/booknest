@@ -23,7 +23,8 @@
 
             {% csrf_token %}
 
-            {{ form.as_p }}
+            {{ form | crispy }}
+
             <fieldset>
                 <legend>Payment</legend>
 

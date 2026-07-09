@@ -2,6 +2,7 @@
 
 from django.db import models
 from django.contrib.auth.models import User
+from django_countries.fields import CountryField
 
 
 # Create your models here.
@@ -38,9 +39,9 @@ class UserProfile(models.Model):
         blank=True
     )
 
-    default_country = models.CharField(
-        max_length=40,
-        blank=True
+    default_country = CountryField(
+        blank=True,
+        null=True
     )
 
     def __str__(self):
