@@ -58,7 +58,7 @@ def book_list(request):
     if category:
         books = books.filter(category__name=category)
 
-    paginator = Paginator(books, 10)
+    paginator = Paginator(books, 9)
     page_number = request.GET.get('page')
     books_page = paginator.get_page(page_number)
 
