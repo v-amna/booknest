@@ -69,6 +69,12 @@ The following SEO practices have been implemented:
 - Keyword-focused book descriptions.
 - Mobile-responsive design.
 
+SEO file details:
+
+- `sitemap.xml` is generated using the free service https://www.xml-sitemaps.com/.
+- `sitemap.xml` is served through the route in `booknest/urls.py` using `sitemap_view`.
+- `robots.txt` is served through `home/urls.py` and handled by `robots_txt` in `home/views.py`.
+
 These improvements increase BookNest's visibility within search engine results and improve the user experience.
 
 ### Content Marketing
@@ -266,6 +272,63 @@ This flow shows how an admin can manage books from the site, including listing, 
 5. When uploading or changing the cover image, a preview is shown before save.
 
 ![book_cover_preview](screenshot/Book-edit-cover-preview.png)
+
+### Admin User Flow - Manage Subscribers
+
+This flow shows how staff/admin users can manage newsletter subscribers from the subscriber management page.
+
+1. Open subscriber management page.
+
+![subscriber_management_list](screenshot/subscriber-list.png)
+
+2. On this page, similar to the book management list page, staff/admin users can:
+
+    - add subscribers
+    - edit subscribers
+    - delete subscribers
+
+3. Subscriber status note:
+
+    - only subscribers with ACTIVE status receive newsletters
+    - bounced emails require manual status updates today
+
+4. Future improvement:
+
+    - bounce/complaint status updates can be automated with webhook implementation
+
+### Admin User Flow - Manage Newsletter Campaigns
+
+This flow shows how staff/admin users can manage newsletter campaigns from the campaign management pages.
+
+1. Open campaign management list page.
+
+![campaigns_management_list](screenshot/campaigns-list.png)
+
+2. On this page, similar to other list pages, staff/admin users can:
+
+    - list campaigns
+    - search campaigns
+    - add campaigns
+    - edit campaigns
+    - delete campaigns
+
+3. Add campaign form is available from this flow.
+
+4. Campaign content validation rule:
+
+    - either `html_body` or `text_body` is allowed
+    - both are not allowed at the same time
+
+5. Campaign send rule:
+
+    - only campaigns with READY status can be sent
+    - when sent, campaign goes to all ACTIVE subscribers
+
+6. After campaign send, sent emails can be verified in the Resend email dashboard.
+
+![campaigns_add_form](screenshot/campaigns-add.png)
+
+![resend_email_dashboard](screenshot/resend-email-dashboard.png)
 
 ## Tech Stack
 
