@@ -249,6 +249,11 @@ The primary objective of BookNest is to provide an efficient ecommerce platform 
 - Stripe Payment Intents
 - Stripe Webhooks
 
+### Email provider
+
+- Resend
+- Setup guide: [docs/resend.md](docs/resend.md)
+
 ### Cloud Storage
 
 - Amazon Web Services (AWS S3)
@@ -256,6 +261,7 @@ The primary objective of BookNest is to provide an efficient ecommerce platform 
 - boto3
 
 Used to store and serve static files (CSS, JavaScript, images) and media files (book cover images) in the production environment.
+Detailed documentation for AWS S3 integration can be found in the [AWS Integration Guide](docs/aws.md).
 
 ### Development Tools
 
@@ -266,6 +272,7 @@ Used to store and serve static files (CSS, JavaScript, images) and media files (
 - AWS Management Console
 - Stripe Dashboard
 - Chrome DevTools
+- Resend email dashboard
 
 ## Database
 The application uses PostgreSQL as the primary database in production, providing better performance, scalability, and reliability compared to SQLite.
