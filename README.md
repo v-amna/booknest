@@ -5,6 +5,16 @@ The primary objective of BookNest is to provide readers with an intuitive online
 
 The project was developed following Agile principles using GitHub Projects, with development organised into Epics and User Stories. Throughout the development lifecycle, emphasis was placed on clean architecture, responsive design, secure authentication, payment processing, database integrity, and an improved user experience.
 
+## Application Preview
+
+### Desktop View
+
+![booknest_desktop_view](screenshot/booknest-desktop_.png)
+
+### Mobile View
+
+![booknest_mobile_view](screenshot/booknest_Phone.png)
+
 
 ## Book Nest - Buissness Model
 
