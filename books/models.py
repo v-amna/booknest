@@ -36,10 +36,13 @@ class Book(models.Model):
     title = models.CharField(max_length=255)
     author = models.CharField(max_length=255)
     publisher = models.CharField(max_length=255)
-    description = models.TextField(blank=True)
-    meta_keywords = models.TextField(blank=True)
+    description = models.TextField()
+    meta_keywords = models.TextField()
 
-    pages = models.PositiveIntegerField()
+    pages = models.PositiveIntegerField(
+        blank=True,
+        null=True
+    )
 
     language = models.CharField(
         max_length=50,
@@ -63,11 +66,15 @@ class Book(models.Model):
     )
 
     cover = models.CharField(
-        max_length=50
+        max_length=50,
+        blank=True,
+        null=True
     )
 
     paper = models.CharField(
-        max_length=100
+        max_length=100,
+        blank=True,
+        null=True
     )
 
     isbn = models.CharField(
