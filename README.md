@@ -313,6 +313,11 @@ Newsletter subscription, promotional banners, and special offers. Book reviews a
 
 ### profiles
 User profiles and authentication. Personal information, Delivery address, order history, and account settings.
+
+
+
+
+
 ## Wireframe
 ### Home Page
 ![Homepage_and_BookCataloge_page](booknest_wireframe/Home.png)
@@ -330,6 +335,24 @@ User profiles and authentication. Personal information, Delivery address, order 
 ### Signout
 ![signout](booknest_wireframe/signout.png)
 
+
+## Agile Methodology
+
+BookNest was developed using an Agile methodology for creating userstories, with project planning and progress managed through GitHub Projects. Development was organised into Epics, User Stories, Bugs, and Tasks, allowing features to be implemented incrementally while maintaining clear project organisation throughout the software development lifecycle.
+
+To prioritise development, the MoSCoW prioritisation technique was used. Each User Story was assigned one of the following labels:
+
+- Must Have – Essential functionality required for the minimum viable product (MVP).
+- Should Have – Important features that significantly improve the user experience but are not critical for the initial release.
+- Could Have – Desirable enhancements that add value if development time permits.
+
+Each issue progressed through the following workflow:
+
+- To Do
+- In Progress
+- Done
+
+This structured approach enabled continuous development, frequent commits, regular testing, effective bug tracking, and incremental delivery of new features throughout the project.
 
 ## Installation
 
@@ -361,3 +384,7 @@ python manage.py createsuperuser
 
 python manage.py runserver
 Visit: http://127.0.0.1:8000/
+
+## Testing With Validators
+![sign_in](screenshot/Authentication/sign_in.png)
+![sign_up](screenshot/Authentication/sign_up.png)
