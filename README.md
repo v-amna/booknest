@@ -5,6 +5,16 @@ The primary objective of BookNest is to provide readers with an intuitive online
 
 The project was developed following Agile principles using GitHub Projects, with development organised into Epics and User Stories. Throughout the development lifecycle, emphasis was placed on clean architecture, responsive design, secure authentication, payment processing, database integrity, and an improved user experience.
 
+## Application Preview
+
+### Desktop View
+
+![booknest_desktop_view](screenshot/booknest-desktop_.png)
+
+### Mobile View
+
+![booknest_mobile_view](screenshot/booknest_Phone.png)
+
 
 ## Book Nest - Buissness Model
 
@@ -68,6 +78,12 @@ The following SEO practices have been implemented:
 - Robots.txt.
 - Keyword-focused book descriptions.
 - Mobile-responsive design.
+
+SEO file details:
+
+- `sitemap.xml` is generated using the free service https://www.xml-sitemaps.com/.
+- `sitemap.xml` is served through the route in `booknest/urls.py` using `sitemap_view`.
+- `robots.txt` is served through `home/urls.py` and handled by `robots_txt` in `home/views.py`.
 
 These improvements increase BookNest's visibility within search engine results and improve the user experience.
 
@@ -218,6 +234,112 @@ The primary objective of BookNest is to provide an efficient ecommerce platform 
 - Maintain the catalogue using product management features.
 - Deliver a responsive shopping experience across all devices.
 
+### Admin User Flow - Manage Categories
+
+This flow shows how an admin can create a new book category from the Django admin interface.
+
+1. Login as admin.
+
+![admin_login](screenshot/Admin-login.png)
+
+2. Click on Categories.
+
+![admin_categories](screenshot/Admin-categories.png)
+
+3. Click on Add Categories.
+
+![admin_categories_add_button](screenshot/Admin-categories-list-add.png)
+
+4. Fill category name and press Save.
+
+![admin_categories_add_form](screenshot/Admin-categories-add.png)
+
+### Admin User Flow - Manage Books
+
+This flow shows how an admin can manage books from the site, including listing, searching, editing, adding, and cover-image preview behavior.
+
+1. Go to the site URL `https://booknest-1-5c0fa7f9a116.herokuapp.com/` and open the user menu to access book management.
+
+![book_management_entry](screenshot/Book-Management.png)
+
+2. On the Book Management page, admin can:
+    - add a book
+    - view the listing
+    - search by ISBN, title, and author
+    - edit or delete each book
+
+![book_management_page](screenshot/Book-Management-list.png)
+
+3. On the Edit Book page, all book fields are shown for updates.
+
+![book_edit_page](screenshot/Book-edit.png)
+
+4. Add Book uses the same form as Edit Book. Fields marked with `*` are required.
+    `meta_keywords` is used for SEO meta keywords.
+
+![book_add_same_as_edit](screenshot/Book-edit.png)
+
+5. When uploading or changing the cover image, a preview is shown before save.
+
+![book_cover_preview](screenshot/Book-edit-cover-preview.png)
+
+### Admin User Flow - Manage Subscribers
+
+This flow shows how staff/admin users can manage newsletter subscribers from the subscriber management page.
+
+1. Open subscriber management page.
+
+![subscriber_management_list](screenshot/subscriber-list.png)
+
+2. On this page, similar to the book management list page, staff/admin users can:
+
+    - add subscribers
+    - edit subscribers
+    - delete subscribers
+
+3. Subscriber status note:
+
+    - only subscribers with ACTIVE status receive newsletters
+    - bounced emails require manual status updates today
+
+4. Future improvement:
+
+    - bounce/complaint status updates can be automated with webhook implementation
+
+### Admin User Flow - Manage Newsletter Campaigns
+
+This flow shows how staff/admin users can manage newsletter campaigns from the campaign management pages.
+
+1. Open campaign management list page.
+
+![campaigns_management_list](screenshot/campaigns-list.png)
+
+2. On this page, similar to other list pages, staff/admin users can:
+
+    - list campaigns
+    - search campaigns
+    - add campaigns
+    - edit campaigns
+    - delete campaigns
+
+3. Add campaign form is available from this flow.
+
+4. Campaign content validation rule:
+
+    - either `html_body` or `text_body` is allowed
+    - both are not allowed at the same time
+
+5. Campaign send rule:
+
+    - only campaigns with READY status can be sent
+    - when sent, campaign goes to all ACTIVE subscribers
+
+6. After campaign send, sent emails can be verified in the Resend email dashboard.
+
+![campaigns_add_form](screenshot/campaigns-add.png)
+
+![resend_email_dashboard](screenshot/resend-email-dashboard.png)
+
 ## Tech Stack
 
 ### Backend
@@ -265,7 +387,7 @@ Detailed documentation for AWS S3 integration can be found in the [AWS Integrati
 
 ### Development Tools
 
-- Visual Studio Code *(or PyCharm if you used it)*
+- Visual Studio Code or PyCharm
 - Git
 - GitHub
 - Heroku
@@ -276,6 +398,12 @@ Detailed documentation for AWS S3 integration can be found in the [AWS Integrati
 
 ## Database
 The application uses PostgreSQL as the primary database in production, providing better performance, scalability, and reliability compared to SQLite.
+
+### ER Diagram
+
+The database structure is documented with the following entity relationship diagram.
+
+![booknest_db_er_diagram](screenshot/booknest%20-db-er-diagram.png)
 
 ### Development and Production
 • Development: SQLite (default Django database for simplicity)
@@ -392,6 +520,108 @@ python manage.py createsuperuser
 python manage.py runserver
 Visit: http://127.0.0.1:8000/
 
+## Deployment
+
+### Heroku App Setup
+
+- Create the Heroku app by following the official Heroku documentation:
+    https://devcenter.heroku.com/categories/python-support
+- Configure the application to use the included `Procfile`:
+    `web: gunicorn booknest.wsgi`
+- Enable automatic deployment from the connected Git branch so every branch push can trigger deployment when auto deploy is enabled in Heroku.
+- Heroku app setup and deployment references:
+    https://devcenter.heroku.com/articles/getting-started-with-python
+    https://devcenter.heroku.com/articles/github-integration
+
+### PostgreSQL Database Setup
+
+- Production uses PostgreSQL.
+- On Heroku, provision Heroku Postgres and attach it to the app.
+  For the project, codeinstitute database is used.
+- The application reads database connection details from environment variables, including `DATABASE_URL` when available.
+- PostgreSQL / Heroku Postgres references:
+    https://devcenter.heroku.com/articles/heroku-postgresql
+
+### AWS S3 Setup
+
+- Static and media file deployment should be configured with AWS S3.
+- Setup instructions for bucket creation, IAM, environment variables, and Django integration are documented in [docs/aws.md](docs/aws.md).
+
+### Resend Email Setup
+
+- Email delivery is configured through Resend.
+- Setup instructions for domain verification, API key configuration, and Heroku/local environment setup are documented in [docs/resend.md](docs/resend.md).
+
+### Stripe Setup
+
+- Stripe is used for payment processing.
+- Configure Stripe keys, webhooks, and payment flow using the official Stripe documentation.
+- Stripe environment variables used in this project are:
+  - `STRIPE_PUBLIC_KEY`
+  - `STRIPE_SECRET_KEY`
+  - `STRIPE_WH_SECRET`
+- These values are loaded from environment variables in `env.py` for local development and should be configured as app config vars in deployment environments.
+- Add these as environment variables in Heroku for production deployment.
+- Stripe developer references:
+    https://docs.stripe.com/
+    https://docs.stripe.com/payments
+    https://docs.stripe.com/webhooks
+
 ## Testing With Validators
+
+Form validations added to all forms
+Example
 ![sign_in](screenshot/Authentication/sign_in.png)
 ![sign_up](screenshot/Authentication/sign_up.png)
+
+## Automated Testing
+
+### Chrome DevTools Lighthouse validation
+
+- Chrome DevTools Lighthouse was used to validate frontend quality.
+- A Lighthouse test was run on the books page.
+- Reported results from the validation were:
+    - Performance: 94
+    - Accessibility: 100
+    - Best Practices: 100
+    - SEO: 100
+
+![lighthouse_books_page](screenshot/lighthouse-books-page.png)
+
+### Code-style and docstring validation
+
+- `flake8` is used for code-style and doc-string checking.
+- Running `flake8` should not return any errors.
+
+### Unit testing
+
+- `pytest` is used for unit testing.
+- Testing should use the local database configuration.
+- This project is configured with `pytest.ini` for Django settings and test discovery.
+
+Recommended to run test commands before committing code to ensure code quality and functionality.
+```bash
+flake8
+pytest
+```
+
+## Future Improvements
+
+- Email bounce and spam report management using Resend webhooks.
+- Book stock management should be implemented so orders cannot be placed for out-of-stock products.
+- Refund process support.
+- Email confirmation after successful payment.
+- Order delivery tracking.
+
+## References
+
+- Django documentation:
+    https://docs.djangoproject.com/
+- AWS documentation:
+    https://docs.aws.amazon.com/
+- Stripe documentation:
+    https://docs.stripe.com/
+- Resend documentation:
+    https://resend.com/docs
+- Code Institute Boutique Ado project repository:
+    https://github.com/Code-Institute-Solutions/boutique_ado_v1

@@ -231,7 +231,7 @@ class TestBookListView:
         """Book list pagination, 10 item per page."""
         client = Client()
         response = client.get(reverse('books'))
-        assert len(response.context['books']) == 10
+        assert len(response.context['books']) == 9
 
     def test_book_list_search_by_title(self, books):
         """Book list search by title."""

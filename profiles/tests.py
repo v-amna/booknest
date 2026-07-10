@@ -1,7 +1,6 @@
 """Tests for user profile model."""
 
 import pytest
-import pytest
 from django.contrib.auth.models import User
 from .models import UserProfile
 
